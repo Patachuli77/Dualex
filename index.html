@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang=es>
+
+<head>
+	<meta charset=utf-8 />
+	<meta name=viewport content='width=device-width, initial-scale=1' />
+	<meta name=author content='Miguel Jaque <mjaque@migueljaque.com' />
+	<meta http-equiv="Cache-Control" content="no-store" />
+
+	<title>DUALEX - Evaluación de Formación DUAL</title>
+
+	<link rel=stylesheet href=css/reset.css />
+	<link rel=stylesheet href=css/estilos.css />
+	<link rel=manifest href=manifest.json />
+</head>
+
+<body>
+
+	<div id=divLogin>
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+		<h1>Dualex</h1>
+		<p>Aplicación para la evaluación de la formación DUAL.</p>
+		<p class=error></p>
+		<div id=divGoogleLogin ></div>
+<!-- En producción, eliminar este párrafo -->
+		<p>Pruebas (eliminar en producción): 
+			<select id=testlogin>
+				<option></option>
+				<optgroup label="---Alumnos:">
+					<option value=alumno1@alumnado.fundacionloyola.net>alumno_1</option>
+					<option value=alumno__102.guadalupe@alumnado.fundacionloyola.net>alumno_2</option>
+					<option value=alumno__103.guadalupe@alumnado.fundacionloyola.net>alumno_3</option>
+					<option value=alumno__104.guadalupe@alumnado.fundacionloyola.net>alumno_4</option>
+					<option value=alumno__105.guadalupe@alumnado.fundacionloyola.net>alumno_5</option>
+					<option value=alumno__106.guadalupe@alumnado.fundacionloyola.net>alumno_6</option>
+					<option value=alumno__107.guadalupe@alumnado.fundacionloyola.net>alumno_7</option>
+					<option value=alumno__108.guadalupe@alumnado.fundacionloyola.net>alumno_8</option>
+					<option value=alumno__109.guadalupe@alumnado.fundacionloyola.net>alumno_9</option>
+					<option value=alumno__110.guadalupe@alumnado.fundacionloyola.net>alumno_10</option>
+				</optgroup>
+				<optgroup label="---Profesores:">
+					<option value=aportero@fundacionloyola.es>aportero</option>
+					<option value=dcamison@fundacionloyola.es>dcamison</option>
+					<option value=mmolano@fundacionloyola.es>mmolano</option>
+					<option value=asanchez@fundacionloyola.es>asanchez</option>
+					<option value=prisco@fundacionloyola.es>prisco</option>
+					<option value=jahernandez@fundacionloyola.es>jahernandez</option>
+					<option value=tmora@fundacionloyola.es>tmora</option>
+					<option value=mfuentes@fundacionloyola.es>mfuentes</option>
+					<option value=bduran@fundacionloyola.es>bduran</option>
+					<option value=mjaque@fundacionloyola.es>mjaque</option>
+					<option value=jorgeortegarivera.guadalupe@alumnado.fundacionloyola.net>Jorge</option>
+				</optgroup>
+			</select>
+		</p>
+	</div>
+
+	<div id=divDialogo>
+		<div>
+  			<span>&times;</span>
+  			<h2>Título del Diálogo</h2>
+  			<p>Mensaje del Diálogo</p>
+  			<button>Cancelar</button>
+  			<button>Aceptar</button>
+		</div>
+	</div>
+
+	<div id=divMenu></div>
+
+	<div id=divMensaje>
+		<span>X</span>
+		<span>Este es un mensaje de Error</span>
+	</div>
+
+	<div id=divTareas></div>
+
+	<div id=divTarea>
+		<h1>Tarea</h1>
+		<p>A completar por el alumno:</p>
+		<label>Título:
+			<input type=text placeholder='Título de la tarea realizada.' />
+		</label><br />
+		<label>Fecha de Inicio:
+			<input type=date />
+		</label><br />
+		<label>Fecha de Fin:
+			<input type=date />
+		</label><br />
+		<label style='display:none'>Imágenes:<br /><br />
+			<input type=file capture="camera" accept="image/*"/>
+			
+		</label>
+		
+		<!-- div de imágenes -->
+		<img />
+		<div></div>
+
+		<label>Descripción:<br />
+			<textarea placeholder='Descripción de la tarea realizada.'></textarea>
+		</label><br />
+		<fieldset>
+			<legend>Actividades Relacionadas:</legend>
+			<div></div>
+		</fieldset>
+		<hr />
+
+		<h2>Evaluación de la Empresa</h2>
+		<p>A completar por el tutor de empresa:</p>
+		<label>Evaluación:
+			<select>
+				<option value=null>Sin Calificar</option>
+			</select>
+		</label><br />
+			<label>Comentario:<br />
+			<textarea placeholder='Comentario del tutor de empresa'></textarea>
+		</label><br />
+			<hr />
+			
+		<h2>Evaluaciones de Profesores</h2>
+		<div></div>
+
+		<div>
+			<button>Cancelar</button>
+			<button>Aceptar</button>
+			<button id="btn_tarea_anterior">Tarea Anterior(sin guardar)</button>
+			<button id="btn_aceptar_siguiente">Aceptar y Siguente</button>
+		</div>
+	</div>
+
+	<div id=divAlumnos>
+		<div>
+			
+		</div>
+	</div>
+
+	<div id=divInforme>
+		<h1>Informe trimestral de valoracion sumativa (Anexo IV)</h1>
+		<div>
+			<p>Alumno/alumna: <span data-informe=alumno></span></p>
+			<p>Centro docente: <strong>ESCUELA VIRGEN DE GUADALUPE - FUNDACIÓN LOYOLA ACE</strong></p>
+		</div>	
+		<div>
+			<p class=derecha><span data-informe=grado></span></p>
+			<p>Ciclo Formativo: <strong><span data-informe=ciclo></span></strong></p>
+		</div>
+		<div>
+			<p class=derecha>Horas realizadas: 90</p>
+			<p>Centro de trabajo: <strong><input type=text placeholder='Nombre del centro' size=25 /></strong></p>
+		</div>
+		<div>
+			<p class=derecha><span data-informe=periodo></span></p>
+			<p>Tutor/tutora del alumno o alumna en el centro de trabajo: <strong><input type=text placeholder='Nombre del tutor' size=25 /></strong></p>
+		</div>	
+		<div>
+			<p>Coordinador del Ciclo: <strong><span data-informe=coordinador></span></strong></p>
+		</div>
+		<div class=contenedor-grid>
+			<p><strong>1.- VALORACIÓN DE LAS ACTIVIDADES FORMATIVAS REALIZADAS DURANTE ESTE TIEMPO Y GRADO DE DESEMPEÑO:</strong></p>
+			<div class=grid1> </div>
+		</div>
+		<div>
+			<p><strong>2.- VALORACIÓN GENERAL DEL ALUMNO/ALUMNA DE ESTE PERIODO EN EL CENTRO DE TRABAJO:</strong></p>
+			<div class=grid2> 
+				<div>ASPECTOS A CONSIDERAR</div>
+				<div>NEGATIVA</div>
+				<div>POSITIVA</div>
+				<div>EXCELENTE</div>
+
+				<div>Puntualidad, asistencia</div>
+				<div><input name=puntualidad type=radio /></div>
+				<div><input name=puntualidad type=radio /></div>
+				<div><input name=puntualidad type=radio /></div>
+
+				<div>Habilidades y Destrezas</div>
+				<div><input name=habilidades type=radio /></div>
+				<div><input name=habilidades type=radio /></div>
+				<div><input name=habilidades type=radio /></div>
+
+				<div>Técnicas y procedimientos</div>
+				<div><input name=tecnicas type=radio /></div>
+				<div><input name=tecnicas type=radio /></div>
+				<div><input name=tecnicas type=radio /></div>
+
+				<div>Competencias profesionales y organizativas</div>
+				<div><input name=cpo type=radio /></div>
+				<div><input name=cpo type=radio /></div>
+				<div><input name=cpo type=radio /></div>
+
+				<div>Competencias relacionales</div>
+				<div><input name=cr type=radio /></div>
+				<div><input name=cr type=radio /></div>
+				<div><input name=cr type=radio /></div>
+
+				<div>Otros aspectos:
+				<br/><textarea rows=1 cols=40 placeholder='Nada a destacar' ></textarea></div>
+				<div><input name=otros type=radio /></div>
+				<div><input name=otros type=radio /></div>
+				<div><input name=otros type=radio /></div>
+			</div>
+		</div>
+		<div>
+			<p><strong>3.- OBSERVACIONES, ASUNTOS TRATADOS Y DECISIONES TOMADAS:</strong></p>
+			<textarea rows=1 cols=50 placeholder='Sin observaciones' ></textarea>
+			<p>En <input type=text placeholder=localidad />, a <input type=text placeholder=día size=15 /> de <input type=text placeholder=mes size=10 /> de <input type=text placeholder=año size=4 />.</p>
+			<p><strong>El tutor del centro de trabajo:</strong></p>
+			<p><strong>Fdo. <input type=text placeholder='Nombre del tutor' /></strong></p>
+			<br /><br />
+		</div>
+		<div>
+			<p><strong>EVALUACIÓN POR MÓDULOS:</strong></p>
+			<div class=grid3> </div>
+			<textarea rows=1 cols=50 placeholder='Comentarios de evaluación' ></textarea>
+		</div>
+	</div>
+
+    <div id="divMenuCoordinador">
+		<div id="divMenuCoordinadorWraper">
+		  <div class="divMenuCoordinadorBox">
+			<h2>Alumnos</h2>
+			<p>Gestión de los alumnos</p>
+			<button id="botonAlumnos">Entrar</button>
+		  </div>
+		  <div class="divMenuCoordinadorBox">
+			<h2>Profesores</h2>
+			<p>Gestión de los profesores</p>
+			<button id="botonProfesores">Entrar</button>
+		  </div>
+		  <div class="divMenuCoordinadorBox"> 
+			<h2>Empresas</h2>
+			<p>Gestión de las empresas</p>
+			<button id="botonEmpresa">Entrar</button>
+		  </div>
+		  <div class="divMenuCoordinadorBox">
+			<h2>Convenios</h2>
+			<p>Gestión de los convenios</p>
+			<button id="botonConvenios">Entrar</button>
+		  </div>
+		  <div class="divMenuCoordinadorBox">
+			<h2>Actividades</h2>
+			<p>Gestión de las Actividades</p>
+			<button id="botonActividades">Entrar</button>
+		  </div>
+		  <div class="divMenuCoordinadorBox">
+			<h2>Modulos</h2>
+			<p>Gestión de los Modulos</p>
+			<button id="botonModulos">Entrar</button>
+		  </div>
+	  	</div>
+	</div>
+	
+    <div id="divConvenio" class='vistaConvenios'>
+     <div class="divFlex">
+			<p></p>
+		</div>
+		<div class="divFlex">
+			<label>Titulo:</label>
+			<input type="text"  placeholder="(Titulo del documento)" />
+		</div>
+		<span id="errorTitulo" class="error" style="color: red; margin-left: 41%"></span>
+		<div class="divFlex">
+			<label>Fecha de Firma del delegado:</label>
+			<input type="date" placeholder="(Fecha firma)" />
+		</div>
+		<span id="errorFechaFirma" class="error" style="color: red; margin-left: 41%"></span>
+		<div class="divFlex">
+			<label>Documento:</label>
+			<input type="file"  accept=".pdf" size="10485760"/>
+		</div>
+		<span id="errorDocumento" class="error" style="color: red; margin-left: 41%"></span>
+		<div class="divFlex">
+			<label>Ciclo:</label>
+			<select>
+				<!-- Options -->
+			</select>
+		</div>
+		<div class="divFlex">
+			<label>Empresa:</label>
+			<select>
+				<!-- options -->
+			</select>
+		</div>
+		<div class="divFlexBotones">
+			<button>Añadir</button>
+			<button style="background-color: darkred">Limpiar</button>
+		</div>
+	</div>
+
+	<div id="divConvenios">
+		<table>
+
+		</table>
+	</div>
+
+	<div id="divEmpresa">
+		<div class="divFlex">
+			<label for="siglas">Siglas:</label>
+			<input type="text" id="siglas" maxlength=9 placeholder="(Siglas de la empresa)" />
+		</div>
+		<div class="divFlex">
+			<label for="nombreEmpresa">Nombre de la empresa:</label>
+			<input type="text" id="nombreEmpresa" maxlength=256 placeholder="(Nombre de la empresa)" />
+		</div>
+		<div class="divFlex">
+			<label for="notas">Notas:</label>
+			<textarea id="notas"></textarea>
+		</div>
+		<div class="divFlexBotones">
+			<button id="btnAnadirEmpresa">Añadir</button>
+			<button id="volver-aniadir">Cancelar</button>
+		</div>	
+	</div>
+
+	<div id="divEditarEmpresa">
+		<div class="divFlex">
+			<label for="siglasEditar">Siglas:</label>
+			<input type="text" id="siglasEditar" maxlength=9 placeholder="(Siglas de la empresa)" />
+		</div>
+		<div class="divFlex">
+			<label for="nombreEmpresaEditar">Nombre de la empresa:</label>
+			<input type="text" id="nombreEmpresaEditar" maxlength=256 placeholder="(Nombre de la empresa)" />
+		</div>
+		<div class="divFlex">
+			<label for="notasEditar">Notas:</label>
+			<textarea id="notasEditar"></textarea>
+		</div>
+		<div class="divFlexBotones">
+			<button id="btnEditar">Editar</button>
+			<button id="volver-editar">Volver</button>
+		</div>
+	</div>
+
+	<div id="divEmpresas">
+		<div></div>
+	</div>
+
+	<div id="divAltaAlumno" class="gestionAlumno">
+		<h1>Añadir - Alumno</h1>
+		<div class="divFlex">
+			<label for="nombreAlumno">Nombre:</label>
+			<input type="text" id="nombreAlumno" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreAlumno" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="apellidosAlumno">Apellidos:</label>
+			<input type="text" id="apellidosAlumno" placeholder="(Apellidos)" />
+		</div>
+		<small id="errorApellidosAlumno" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="emailAlumno">Email:</label>
+			<input type="text" id="emailAlumno" placeholder="(Email)" />
+		</div>
+		<small id="errorEmailAlumno" class="error">Formato erróneo</small>
+		<div class="divFlex">
+			<label for="selectCicloAltaAlumno">Curso:</label>
+			<select id="selectCicloAltaAlumno">
+			</select>
+		</div>
+		<small id="errorCursoAlumno" class="error">Debe seleccionar un curso</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirAltaAlumno">Añadir</button>
+			<button id="btnLimpiarAltaAlumno" style="background-color: darkred">Limpiar</button>
+			<button id="btnCancelarAltaAlumno" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id="divModificarAlumno" class="gestionAlumno">
+		<h1>Modificar - Alumno</h1>
+		<div class="divFlex">
+			<label for="nombreAlumnoMod">Nombre:</label>
+			<input type="text" id="nombreAlumnoMod" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreAlumnoMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="apellidosAlumnoMod">Apellidos:</label>
+			<input type="text" id="apellidosAlumnoMod" placeholder="(Apellidos)" />
+		</div>
+		<small id="errorApellidosAlumnoMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="emailAlumnoMod">Email:</label>
+			<input type="text" id="emailAlumnoMod" placeholder="(Email)" />
+		</div>
+		<small id="errorEmailAlumnoMod" class="error">Formato erróneo</small>
+		<div class="divFlex">
+			<label for="selectCicloModAlumno">Curso:</label>
+			<select id="selectCicloModAlumno">
+			</select>
+		</div>
+		<small id="errorCursoAlumnoMod" class="error">Debe seleccionar un curso</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirModAlumno">Modificar</button>
+			<button id="btnCancelarModAlumno" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id="divModificarActividad" class="gestionActividad">
+		<h1>Añadir - Actividad</h1>
+		<div class="divFlex">
+			<label for="tituloActividadMod">Actividad:</label>
+			<input type="text" id="tituloActividadMod" placeholder="(Titulo Actividad)" />
+		</div>
+		<small id="errorNombreActividadMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="descripcionActividadMod">Descripción:</label>
+			<textarea id="descripcionActividadMod"></textarea>
+		</div>
+		<div class="divFlex">
+			<label for="selectModuloActividadMod">Modulo:</label>
+			<div id="selectModuloActividadMod">
+			</div>
+		</div>
+		<small id="errorModuloActividadMod" class="error">Debe seleccionar un modulo</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirModActividad">Modificar</button>
+			<button id="btnCancelarModActividad" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+
+
+	<div id="divAltaActividad" class="gestionActividad">
+		<h1>Añadir - Actividad</h1>
+		<div class="divFlex">
+			<label for="tituloActividad">Actividad:</label>
+			<input type="text" id="tituloActividad" placeholder="(Titulo Actividad)" />
+		</div>
+		<small id="errorNombreActividad" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="descripcionActividad">Descripción:</label>
+			<textarea id="descripcionActividad"></textarea>
+		</div>
+		<div class="divFlex">
+			<label for="selectModuloActividad">Modulo:</label>
+			<div id="selectModuloActividad">
+			</div>
+		</div>
+		<small id="errorModuloActividad" class="error">Debe seleccionar un modulo</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirAltaActividad">Añadir</button>
+			<button id="btnLimpiarAltaActividad" style="background-color: darkred">Limpiar</button>
+			<button id="btnCancelarAltaActividad" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+
+
+	<div id='divGestionAlumnos'>
+		<p>
+			<label for="selectCursoListadoAlumnos">Curso: </label>
+			<select id="selectCursoListadoAlumnos">
+
+			</select>
+		</p>
+		<section id="gestionAlumnosListado">
+
+		</section>
+	</div>
+	<div id='divGestionModulos'>
+		<p>
+			<label for="selectCursoListadoModulos">Curso: </label>
+			<select id="selectCursoListadoModulos">
+
+			</select>
+		</p>
+		<section id="gestionModulosListado">
+
+		</section>
+	</div>
+	<div id='divGestionActividades'>
+		<p>
+			<label for="selectModuloListadoActividades">Modulo: </label>
+			<select id="selectModuloListadoActividades">
+
+			</select>
+		</p>
+		<section id="gestionActividadesListado">
+
+		</section>
+	</div>
+
+	<div id="divAltaProfesor" class="gestionProfesor">
+		<h1>Añadir - Profesor</h1>
+		<div class="divFlex">
+			<label for="nombreProfesor">Nombre:</label>
+			<input type="text" id="nombreProfesor" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreProfesor" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="apellidosProfesor">Apellidos:</label>
+			<input type="text" id="apellidosProfesor" placeholder="(Apellidos)" />
+		</div>
+		<small id="errorApellidosProfesor" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="emailProfesor">Email:</label>
+			<input type="text" id="emailProfesor" placeholder="(Email)" />
+		</div>
+		<small id="errorEmailProfesor" class="error">Formato erróneo</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirAltaProfesor">Añadir</button>
+			<button id="btnLimpiarAltaProfesor" style="background-color: darkred">Limpiar</button>
+			<button id="btnCancelarAltaProfesor" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id="divModificarProfesor" class="gestionProfesor">
+		<h1>Modificar - Profesor</h1>
+		<div class="divFlex">
+			<label for="nombreProfesorMod">Nombre:</label>
+			<input type="text" id="nombreProfesorMod" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreProfesorMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="apellidosProfesorMod">Apellidos:</label>
+			<input type="text" id="apellidosProfesorMod" placeholder="(Apellidos)" />
+		</div>
+		<small id="errorApellidosProfesorMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="emailProfesorMod">Email:</label>
+			<input type="text" id="emailProfesorMod" placeholder="(Email)" />
+		</div>
+		<small id="errorEmailProfesorMod" class="error">Formato erróneo</small>
+		<div class="divFlexBotones">
+			<button id="btnAnadirModProfesor">Modificar</button>
+			<button id="btnCancelarModProfesor" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+
+	<div id='divGestionProfesores'>
+		<section id="gestionProfesoresListado">
+
+		</section>
+	</div>
+
+
+
+	<div id="divProfesores">
+	</div>
+	
+	<div id=divCreditos>
+		<h2>Versión 1.2</h2>
+		<p>Dualex es una aplicación para la evaluación de alumnos de Ciclos Formativos en formación DUAL.</p>
+		<p><strong>Dirección Técnica</strong>: Pedro Risco &lt;prisco@fundacionloyola.es&gt;</p>
+		<p><strong>Programación</strong>: Miguel Jaque &lt;mjaque@migueljaque.com&gt;</p>
+		<p><strong>Fecha de Publicación</strong>: Julio 2022</p>
+		<p><strong>Licencia</strong>: <a href="licencia.html">GPL v3</a></p>
+	</div>
+	<script type=module src=js/dualex.js></script>
+</body>
+
+</html>
+

@@ -1,0 +1,1876 @@
+/* Reglas de css */
+
+body {
+	font-family: arial;
+}
+
+h1, h2{
+	color: blue;
+}
+
+h1{
+	font-size: 140%;
+	padding-bottom: 0.5em;
+}
+
+h2{
+	font-size: 120%;
+	font-style: italic;
+	padding-bottom: 0.2em;
+}
+
+fieldset{
+	border: 1px solid gray;
+	border-radius: 1rem;
+	padding: 0.5rem;
+}
+legend{
+	padding: 0 0.5rem;
+}
+
+/* Inicialmente ocultamos las vistas */
+#divLogin, #divDialogo, #divAlumnos, #divTarea, #divTareas, #divInforme,
+#divCreditos, #divConvenio, #divConvenios, .gestionAlumno, #divGestionAlumnos,
+#divEmpresa, #divEmpresas, #divEditarEmpresa, #divMenuCoordinador, #divProfesores, #divAltaProfesor, #divModificarProfesor, #divGestionProfesores,.gestionActividad, #divGestionActividades, #divAltaActividad, #divGestionModulos{
+	display: none;
+}
+
+#divLoginGoogle{
+	border: 1px solid red;
+}
+
+.icono_rectangular{
+	float: right;
+	margin: 1rem;
+	background-color: darkred;
+	cursor: pointer;
+}
+.icono_rectangular:hover{
+	float: right;
+	background-color: red;
+}
+
+#divCreditos{
+	padding: 1rem;
+	line-height: 2rem;
+}
+#divCreditos p strong{
+	font-weight: bold;
+	color: blue;
+}
+
+#divMensaje{
+	width: 60%;
+	margin: 1em auto;
+	padding: 1em;
+	font-size: 1.5em;
+	font-weight: bold;
+	border-radius: 0.3em;
+	display: none;
+}
+/* Botón de cierre del div */
+#divMensaje > span:first-child{
+	margin-right: 1rem;
+	float: right;
+	font-size: 1rem;
+	color: grey;
+	cursor: pointer;
+}
+/* Texto del mensaje */
+#divMensaje > span:nth-child(2){
+	font-size: 1rem;
+}
+#divMensaje.info{
+	background-color: blue;
+	color: white;
+}
+#divMensaje.ok{
+	background-color: green;
+	color: white;
+}
+#divMensaje.aviso{
+	background-color: orange;
+	color: white;
+}
+#divMensaje.error{
+	background-color: red;
+	color: white;
+}
+#divMenu{
+	display:flex;
+	justify-content: flex-end;
+	padding: 0.5rem;
+}
+#divMenu div.usuario{
+	position: absolute;
+	left: 1%;
+	font-size: 0.8rem;
+	color: grey;
+}
+#divMenu h1{
+	flex-grow: 2;
+	text-align: left;
+	order: 0;
+	margin: auto;
+	padding: 0.5rem;
+}
+#divMenu .icono{
+	cursor: pointer;
+	border-radius: 0.5rem;
+	transition: background-color 1s;
+	margin: 0.3rem;
+}
+#divMenu .icono:hover{
+	background-color: lightgreen;
+}
+
+#divTarea {
+	max-width: 90%;
+	margin: 2rem auto;
+	/* padding-bottom para que quepa el botón actualizar */
+	padding: 2rem 1rem 4rem 2rem;
+	border: 1px solid blue;
+	border-radius: 0.5rem;
+	box-shadow: 0.5rem 0.5rem grey;
+}
+#divTarea input{
+	margin: 0.3rem;
+}
+#divTarea input[type='text']:first-of-type{
+	width: 80%;
+}
+#divTarea input[type='number']{
+	width: 3rem;
+	margin: 0.3rem;
+}
+#divTarea .modulo{
+	padding: 0.2rem 0.3rem;
+	border: 1px solid grey;
+	border-radius: 0.3rem;
+	font-size: 0.8rem;
+}
+#divTarea label, #divTarea legend{
+	font-weight: bold;
+}
+
+#divTarea fieldset label{
+	font-weight: normal;
+}
+#divTarea textarea{
+	margin: 0.5rem;
+	width: 80%;
+}
+#divTarea select{
+	margin: 0.5rem;
+}
+/* div de Evaluación de Profesores */
+#divTarea > div:nth-of-type(3){
+	text-align: right;
+}
+
+#divTarea button{
+	cursor: pointer;
+	border: none;
+	color: white;
+	margin: 1rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	font-size: 1.2rem;
+}
+
+#divTarea button:hover{
+	text-decoration: underline;
+}
+#divTarea button:nth-child(1){
+	background-color: red;
+}
+#divTarea button:nth-child(2){
+	background-color: blue;
+}
+#divTarea > div:nth-of-type(2) p {
+	line-height: 2rem;
+}
+#divTarea div.alto{
+	line-height: 1.5rem;
+}
+/* div de imágenes */
+#divTarea > div:nth-of-type(1){
+	position: relative;
+	border: 1px solid grey;
+}
+#divTarea > div:nth-of-type(1) > img:nth-child(odd){
+	max-width: 10rem;
+}
+#divTarea > div:nth-of-type(1) > img:nth-child(even){
+	position: relative;
+	background-color: white;
+	border-radius: 0.2rem;
+	width: 2rem;
+	left: -2rem;
+	cursor: pointer;
+}
+#divTarea > img:nth-of-type(1){
+	display: none;
+	position: absolute;
+	border:1px solid blue;
+	cursor: pointer;
+	z-index: 2;
+}
+#divTarea > img.ampliada{
+	display: block;
+}
+/* Reglas de VistaLogin */
+#divLogin{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-radius: 0.5rem;
+	box-shadow: 0.5rem 0.5rem 2rem grey;
+}
+#divLogin input{
+	margin: 0.3rem;
+}
+#divLogin p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divLogin p.error{
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+#divGoogleLogin{
+	margin: 0.5rem;
+}
+
+/* Reglas de VistaAlumnos */
+#divAlumnos {
+	max-width: 90%;
+	margin: 1rem;
+ 	padding: 2rem;
+}
+#divAlumnos>div {
+	border-bottom: 1px solid lightgrey;
+	height: 1.3rem;
+	margin-bottom: 0.7rem;
+}
+#divAlumnos .ciclo{
+	border-radius: 0.5rem;
+	padding: 0.1rem 0.3rem;
+	margin: 0 0.2rem;
+	cursor: help;
+}
+#divAlumnos .iconos{
+	float: right;
+}
+#divAlumnos .icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#divAlumnos .icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+
+/* DIV Convenio */
+#divConvenio{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+#divConvenio input{
+	margin: 0.3rem;
+}
+#divConvenio button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divConvenio button:hover{
+	text-decoration: underline;
+}
+#divConvenio p{
+	color: blue;
+	margin: auto;
+	margin-bottom: 2%;
+}
+#divConvenio p:nth-of-type(2){
+    /* Párrafo de Error */
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+#divEmpresa button:first-of-type {
+	background-color: blue;
+  }
+
+#divConvenio>label{
+	display: block;
+	width: 30%;
+}
+
+#divConvenio>label>input{
+	margin-left: 15%;
+}
+
+#divConvenio > span{
+	margin-left: 41%;
+	color: red;
+}
+
+#divConvenio button:nth-child(2){
+	background-color: red;
+}
+
+#divConvenios .icono {
+	display: inline-block;
+	width: 1.5rem;
+	height: 1.5rem;
+	cursor: pointer;
+	vertical-align: middle; /* Centra el icono verticalmente */
+}
+
+#divConvenios .icono:hover {
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+#divEditarEmpresa{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+#divEditarEmpresa input{
+	margin: 0.3rem;
+}
+
+#divEditarEmpresa button:first-of-type {
+	background-color: blue;
+  }
+
+#divEditarEmpresa button{
+	cursor: pointer;
+	background-color: red;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divEditarEmpresa button:hover{
+	text-decoration: underline;
+}
+#divEditarEmpresa p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divEditarEmpresa p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+#divEditarEmpresa p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+#divEditarEmpresa p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+#divEditarEmpresa>label{
+	display: block;
+	width: 30%;
+}
+
+#divEditarEmpresa>label>input{
+	margin-left: 15%;
+
+}
+
+.divFlex, .divFlexBotones{
+	display: flex;
+}
+.divFlex{
+	font-size: large;
+}
+.divFlex label{
+	width: 40%;
+}
+.divFlex input[type=text]{
+	width: 50%;
+}
+
+.divFlexBotones{
+	margin-top: 2%;
+	flex-direction: row-reverse;
+}
+/** FIN DIV CONVENIOS **/
+
+/** DIV Convenios **/
+#divConvenios {
+	transition: opacity 1s;
+	margin-bottom: 2%;
+}
+h1{
+	text-align: center; /* Centra el contenido del div */
+}
+#divConvenios table {
+	border-collapse: collapse;
+	width: 90%;
+	margin: auto;
+	margin-top: 20px; /* Añade un margen superior a la tabla */
+}
+
+#divConvenios th, #divConvenios td {
+	text-align: center; /* Centra el contenido de las celdas */
+	padding: 8px;
+	border: 1px solid #ddd;
+}
+
+#divConvenios th {
+	background-color: #f0f0f0;
+}
+
+#divConvenios th:first-child,
+#divConvenios td:first-child {
+	text-align: left;
+}
+
+/* Estilo del botón personalizado */
+.boton-ver-convenios {
+	background-color: rgb(4, 0, 128); /* Color de fondo */
+	color: white; /* Color del texto */
+	padding: 10px 20px; /* Espaciado interno */
+	border: none; /* Sin borde */
+	border-radius: 5px; /* Borde redondeado */
+	cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+	text-decoration: none; /* Sin subrayado */
+	font-size: 14px; /* Tamaño de la fuente */
+	font-weight: bold; /* Texto en negrita */
+	transition: background-color 0.3s; /* Transición suave del color de fondo */
+}
+
+/* Cambio de color al pasar el cursor sobre el botón */
+.boton-ver-convenios:hover {
+	background-color: rgb(0, 0, 80);
+}
+/** FIN DIV Convenios **/
+
+
+/** ESTILO VALIDACIONES **/
+/* Estilos para el estado válido */
+input.valid {
+	border-color: green; /* Cambia el borde a verde */
+}
+
+/* Estilos para el estado inválido */
+input.invalid {
+	border-color: red; /* Cambia el borde a rojo */
+}
+
+#buscador{
+	margin-left: 35%;
+	margin-bottom: 52px;
+	margin-right: 2px;
+	background-color: white;
+	border:1px solid black;
+	border-radius: 5px;
+	padding-left: 11px;
+	width: 200px;
+	height: 18px;
+}
+#filtro{
+	margin-left: 30px;
+	width:200px;
+	background-color: white;
+	border:1px solid black;
+	border-radius: 10px;
+	padding-left: 11px;
+	height: 23px;
+}
+#btnBuscar{
+	background-color: white;
+	border:1px solid black;
+	border-radius: 3px;
+}
+#divMenuBusqueda{
+	margin-bottom: 21px!important;
+	border-bottom-color: white!important;
+}
+#divEmpresa{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+#divEmpresa input{
+	margin: 0.3rem;
+}
+
+#divEditarEmpresa button:first-of-type {
+	background-color: blue;
+ }
+ 
+ #divEmpresa button:first-of-type {
+	background-color: blue;
+}
+
+#divEmpresa button{
+	cursor: pointer;
+	background-color: red;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divEmpresa button:hover{
+	text-decoration: underline;
+}
+#divEmpresa p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divEmpresa p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+#divEmpresa p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+#divEmpresa p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+#divEmpresa>label{
+	display: block;
+	width: 30%;
+}
+
+#divEmpresa>label>input{
+	margin-left: 15%;
+
+}
+
+#divEditarEmpresa{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+#divEditarEmpresa input{
+	margin: 0.3rem;
+}
+#divEditarEmpresa button{
+	cursor: pointer;
+	background-color: red;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divEditarEmpresa button:hover{
+	text-decoration: underline;
+}
+#divEditarEmpresa p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divEditarEmpresa p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+#divEditarEmpresa p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+#divEditarEmpresa p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+#divEditarEmpresa>label{
+	display: block;
+	width: 30%;
+}
+
+#divEditarEmpresa>label>input{
+	margin-left: 15%;
+
+}
+
+.divFlex, .divFlexBotones{
+	display: flex;
+}
+.divFlex{
+	font-size: large;
+}
+.divFlex label{
+	width: 40%;
+}
+.divFlex input[type=text]{
+	width: 50%;
+}
+.divFlex textarea {
+	width: 50%;
+	padding: 8px;
+	box-sizing: border-box;
+	border-radius: 4px;
+}
+.divFlexBotones{
+	margin-top: 2%;
+	flex-direction: row-reverse;
+}
+/* Estilos para el estado válido */
+input.valid {
+	border-color: green; /* Cambia el borde a verde */
+}
+
+/* Estilos para el estado inválido */
+input.invalid {
+	border-color: red; /* Cambia el borde a rojo */
+}
+@media (max-width: 1056px) {
+	#buscador{
+		margin-left: 25%;
+		margin-bottom: 50px;
+		margin-right: 2px;
+	}
+}
+@media (max-width: 725px) {
+	#buscador{
+		margin-left: 15%;
+		margin-bottom: 50px;
+		margin-right: 2px;
+	}
+}
+@media (max-width: 652px) {
+	#buscador{
+		margin-left: 10%;
+		margin-bottom: 10px;
+		margin-right: 2px;
+	}
+	#filtro{
+		margin-left: 10% !important;
+		display: block;
+		width:150px;
+		margin-bottom: 50px;
+	}
+	#divMenuBusqueda{
+		margin-bottom: 40px!important;
+		border-bottom-color: white!important;
+	}
+}
+@media (max-width: 500px) {
+	#buscador{
+		margin-bottom: 10px;
+		margin-right: 2px;
+
+	}
+	#filtro{
+		margin-left: 10% !important;
+		display: block;
+		width:150px;
+		margin-bottom: 50px;
+	}
+	#divMenuBusqueda{
+		margin-bottom: 40px!important;
+		border-bottom-color: white!important;
+	}
+
+}
+
+/* Reglas de VistaMenuContexto */
+.vistamenucontexto{
+	display: none;
+	position: absolute;
+	height: auto !important;
+	z-index: 1;
+	border-radius: 0.5rem;
+	box-shadow: 0.1rem 0.1rem 0.1rem grey;
+	background-color: whitesmoke;
+	padding: 1rem;
+	line-height: 1.5rem;
+}
+.vistamenucontexto a {
+	color: blue;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+
+#buscador{
+	margin-left: 35%;
+	margin-bottom: 52px;
+	margin-right: 2px;
+	background-color: white;
+	border:1px solid black;
+	border-radius: 5px;
+	padding-left: 11px;
+	width: 200px;
+	height: 18px;
+}
+#filtro{
+	margin-left: 30px;
+	width:200px;
+	background-color: white;
+	border:1px solid black;
+	border-radius: 10px;
+	padding-left: 11px;
+	height: 23px;
+}
+#btnBuscar{
+	background-color: white;
+	border:1px solid black;
+	border-radius: 3px;
+}
+#divMenuBusqueda{
+	margin-bottom: 21px!important;
+    border-bottom-color: white!important;
+}
+@media (max-width: 1056px) {
+	#buscador{
+		margin-left: 25%;
+		margin-bottom: 50px;
+		margin-right: 2px;
+	}
+}
+@media (max-width: 725px) {
+	#buscador{
+		margin-left: 15%;
+		margin-bottom: 50px;
+		margin-right: 2px;
+	}
+}
+@media (max-width: 652px) {
+	#buscador{
+		margin-left: 10%;
+		margin-bottom: 10px;
+		margin-right: 2px;
+	}
+	#filtro{
+		margin-left: 10% !important;
+		display: block;
+		width:150px;
+		margin-bottom: 50px;
+	}
+	#divMenuBusqueda{
+		margin-bottom: 40px!important;
+		border-bottom-color: white!important;
+	}
+}
+@media (max-width: 500px) {
+	#buscador{
+		margin-bottom: 10px;
+		margin-right: 2px;
+
+	}
+	#filtro{
+		margin-left: 10% !important;
+		display: block;
+		width:150px;
+		margin-bottom: 50px;
+	}
+	#divMenuBusqueda{
+		margin-bottom: 40px!important;
+		border-bottom-color: white!important;
+	}
+
+}
+
+/* Reglas de VistaMenuContexto */
+.vistamenucontexto{
+	display: none;
+	position: absolute;
+	height: auto !important;
+	z-index: 1;
+ 	border-radius: 0.5rem;
+ 	box-shadow: 0.1rem 0.1rem 0.1rem grey;
+	background-color: whitesmoke;
+	padding: 1rem;
+	line-height: 1.5rem;
+}
+.vistamenucontexto a {
+	color: blue;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* Reglas de VistaTareas */
+#divTareas {
+	width: 90%;
+	margin: 1rem;
+	padding: 2rem;
+}
+#divTareas>div {
+  	margin-bottom: 0.5rem;
+	border-bottom: 1px solid lightgrey;
+	min-height: 1.5rem;
+}
+
+
+#divTareas table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 1%;
+	border: 1px solid black;
+	border-bottom: 5px solid rgba(0, 0, 0, 0.2);
+}
+
+#divTareas td {
+	border: 1px solid black;
+	padding: 1%;
+	vertical-align: middle;
+}
+
+#divTareas td button {
+	background-color: red;
+	color: white;
+	border: 1px solid red;
+	border-radius: 15%;
+	padding: 4% 6%;
+	width: 50%;
+	font-size: large;
+}
+
+#divTareas td button:hover {
+	background-color: darkred;
+}
+
+#divTareas .centrado-horizontal {
+	text-align: center;
+}
+
+#divTareas .centrado-vertical {
+	vertical-align: middle;
+	width: 10%;
+}
+
+#divTareas .tdModulos{
+	width: 15%;
+}
+
+#divTareas .icono_grande{
+	position: fixed;
+	top: 2%;
+	left: 90%;
+	background-color: blue;
+	border-radius: 2rem;
+	cursor: pointer;
+	transition: transform .7s ease-in-out;
+}
+#divTareas .icono_grande:hover{
+	transform: rotate(180deg);
+}
+#divTareas .iconos{
+	position: absolute;
+	right: 2%;
+	white-space: nowrap;
+}
+#divTareas .icono{
+	/*display: inline;*/
+	width: 1.5rem;
+	cursor: pointer;
+}
+#divTareas .icono:hover{
+	background-color: lightblue;
+  	border-radius: 0.7rem;
+}
+#divTareas .modulo{
+	font-size: 0.8rem;
+	margin: 0 0.3rem;
+	padding: 0.2rem;
+	border-radius: 0.2rem;
+	display: inline-block;
+}
+#divTareas .tarea{
+	margin-right: 20%;	/* Para dejar espacio a los iconos */
+	line-height: 1.5rem;
+}
+#divTareas .tarea_pendiente{
+	font-weight: bold;
+	color: red;
+}
+#divTareas .retrasada{
+    background-color: yellow;
+}
+#divTareas .muyRetrasada{
+    background-color: red;
+}
+
+/* Reglas de VistaDialogo */
+#divDialogo{
+  /* Ref. https://www.w3schools.com/howto/howto_css_modals.asp */
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+#divDialogo > div{
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 2rem;
+  border: 1px solid #888;
+  border-radius: 0.5rem;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+#divDialogo span {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+#divDialogo span:hover, #divDialogo span:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+#divDialogo button{
+  cursor: pointer;
+  border: none;
+  margin: 1rem;
+  margin-left: 5rem;
+  padding: 0.5rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+#divDialogo button:nth-of-type(1){
+  background-color: green;
+  color: white;
+}
+#divDialogo button:nth-of-type(2){
+  background-color: red;
+  color: white;
+}
+#divDialogo button:hover{
+  text-decoration: underline;
+}
+
+/* Reglas de VistaInforme */
+#divInforme{
+	margin: 1cm;
+}
+#divInforme > h1{
+	text-align: center;
+	color: blue;
+	font-weight: bold;
+}
+#divInforme div{
+	border: 1px solid black;
+	padding: 0.5rem;
+}
+#divInforme strong{
+	font-weight: bold;
+}
+#divInforme .derecha{
+	float: right;
+}
+#divInforme div.contenedor-grid{
+	padding: 0px;
+}
+#divInforme div.contenedor-grid > p{
+	padding: 0.3rem;
+}
+#divInforme div.grid1{
+	display: grid;
+	grid-template-columns: 45% 5% 45% 5%;
+	padding: 0px;
+}
+#divInforme div.grid1 > div:nth-child(2n){
+	font-weight: bold;
+	text-align: center;
+	padding: 0.3rem;
+}
+#divInforme div.grid1 > div:nth-child(2n) > input{
+	font-size: 1.5rem;
+	width: 2rem;
+	text-align: center;
+}
+#divInforme div.grid2{
+	display: grid;
+	grid-template-columns: 40% 20% 20% 20%;
+	border: none;
+}
+#divInforme div.grid2 div{
+	padding: 0.1rem;
+}
+#divInforme div.grid2 > div:nth-child(2n), #divInforme div.grid2 > div:nth-child(4n+3){
+	text-align: center;
+}
+#divInforme div.grid3{
+	display: grid;
+	grid-template-columns: 45% 5% 45% 5%;
+	border: none;
+}
+#divInforme div.grid3 div{
+	padding: 0.1rem;
+}
+#divInforme div.grid3 > div:nth-child(2n){
+	text-align: center;
+}
+#divInforme div.grid3 em{
+	font-style: italic;
+	font-size: 0.8rem;
+}
+#divInforme table{
+	margin: 2rem auto;
+}
+#divInforme td, #divInforme th{
+	border: 1px solid black;
+	padding: 0.2rem;
+}
+#divInforme th{
+	font-weight: bold;
+	background-color: lightgrey;
+}
+#divInforme tbody:nth-child(2){
+	text-align: center;
+}
+#divInforme .modulo{
+	font-size: 0.8rem;
+	margin: 0 0.3rem;
+	padding: 0.2rem;
+	border-radius: 0.2rem;
+}
+@page {
+	margin: 0; /* Quita el encabezado y pie que pone el navegador */
+	size: A4;
+}
+
+@media print{
+	#divLogin, #divDialogo, #divMenu {
+		display: none !important;
+	}
+	#divInforme{
+		font-size: 0.7rem;
+		/* Para evitar que el navegador ahorre tinta en los fondos */
+		/* print-color-adjust: exact; */
+	}
+	.informe > div{
+		padding: 0.2rem 0.5rem;
+	}
+	.informe div.grid1 {
+		padding: 0;
+	}
+	.informe div.grid1 > div:nth-child(2n+1){
+		font-size: 0.5rem;
+	}
+	.informe textarea, .informe input[type='text']{
+		border: none;
+	}
+	#divInforme .modulo{
+		font-size: 0.5rem;
+		margin: 0 0.2rem;
+		padding: 0 0.2rem;
+		/* antes era none */
+		background-color: white !important;
+	}
+	#divInforme .modulo::before{
+		content: "(";
+	}
+	#divInforme .modulo::after{
+		content: ")";
+	}
+}
+
+#btn_tarea_anterior{
+	background-color: orange;
+	float: left;
+}
+#btn_aceptar_siguiente{
+	background-color: green;
+}
+span.alumno:hover{
+	color:blue;
+	cursor: pointer;
+	font-weight: bold;
+}
+.tarea:hover{
+	color:blue;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#imagen1,#imagen2,#imagen3{
+	/*display: none !important; */
+    width: 80px;
+    height: 80px;
+    float: right;
+    margin-left: 5px;
+}
+
+#spanImg1,#spanImg2,#spanImg3{
+	/*display: none !important; */
+    width: 40px;
+    height: 40px;
+    float: right;
+    margin-left: 5px;
+	background-image: url('../iconos/delete.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+#divEmpresa{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+#divEmpresa input{
+	margin: 0.3rem;
+}
+#divEmpresa button{
+	cursor: pointer;
+	background-color: red;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divEmpresa button:hover{
+	text-decoration: underline;
+}
+#divEmpresa p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divEmpresa p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+#divEmpresa p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+#divEmpresa p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+#divEmpresa>label{
+	display: block;
+	width: 30%;
+}
+
+#divEmpresa>label>input{
+	margin-left: 15%;
+
+}
+
+#divEditarEmpresa{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+#divEditarEmpresa input{
+	margin: 0.3rem;
+}
+#divEditarEmpresa button{
+	cursor: pointer;
+	background-color: red;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+#divEditarEmpresa button:hover{
+	text-decoration: underline;
+}
+#divEditarEmpresa p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+#divEditarEmpresa p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+#divEditarEmpresa p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+#divEditarEmpresa p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+#divEditarEmpresa>label{
+	display: block;
+	width: 30%;
+}
+
+#divEditarEmpresa>label>input{
+	margin-left: 15%;
+}
+
+/* REGLAS del divMenuCoordinador */
+#divMenuCoordinador {
+    margin: auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #divMenuCoordinador {
+        margin-top: 20%; 
+    }
+}
+
+@media (max-width: 400px) {
+    #divMenuCoordinador {
+        margin-top: 30%; 
+    }
+}
+
+#divMenuCoordinadorWraper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.divMenuCoordinadorBox {
+    width: 200px;
+    height: 250px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+#divMenuCoordinador > h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+#divMenuCoordinador > p {
+    font-size: 12px;
+    margin-top: 0;
+}
+
+#divMenuCoordinador > button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 60px;
+    height: 30px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+  
+#divMenuCoordinadorWraper{
+	display: flex;
+	flex-wrap: wrap;
+  }
+  
+ .divMenuCoordinadorBox{
+	width: 200px;
+	height: 250px;
+	border: 1px solid black;
+	box-sizing: border-box;
+	margin: 10px;
+	padding: 10px;
+	position: relative;
+  }
+  
+  #divMenuCoordinador h2{
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 0;
+  }
+  
+  #divMenuCoordinador p{
+	font-size: 12px;
+	margin-top: 0;
+  }
+  
+  #divMenuCoordinador button{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 60px;
+	height: 30px;
+	background-color: blue;
+	color: white;
+	text-align: center;
+	line-height: 30px;
+	font-size: 14px;
+	text-decoration: none;
+  }
+  
+  #divMenuCoordinador button:hover{
+		cursor: pointer;
+  }
+  
+  #divEmpresas {
+    transition: opacity 1s;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.empresa-info:hover{
+	font-weight: bold;
+	cursor: pointer;
+	color: blue;
+}
+
+.empresa-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.empresa-info span {
+    margin-right: 15px;
+}
+
+.iconos img {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.icono.editar {
+    color: blue;
+}
+
+.icono.borrar {
+    color: red;
+}
+
+.icono.editar, .icono.borrar {
+    width: 30%;
+    height: 30%;
+}
+
+/* Reglas de VistaAltaAlumno y VistaModificarAlumno */
+
+.gestionAlumno{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+.gestionAlumno input{
+	margin: 0.3rem;
+}
+.gestionAlumno .error{
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-left: 41%
+}
+.gestionAlumno button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+.gestionAlumno button:hover{
+	text-decoration: underline;
+}
+.gestionAlumno p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+.gestionAlumno p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+.gestionAlumno p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+.gestionAlumno p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+.gestionAlumno>label{
+	display: block;
+	width: 30%;
+}
+
+.gestionAlumno>label>input{
+	margin-left: 15%;
+}
+.gestionAlumno>h1{
+	text-align: center;
+	color: blue;
+}
+.gestionAlumno>.divFlex>input[type=text], .gestionAlumno>.divFlex>select{
+	padding-left: 0.5rem;
+	margin: 4px;
+}
+.gestionAlumno>.divFlex>select{
+	min-width: 20%;
+}
+
+/* Reglas de VistaGestionAlumno */
+
+#divGestionAlumnos {
+	max-width: 90%;
+	margin: 1rem;
+	padding: 2rem;
+}
+#gestionAlumnosListado>div {
+	border-bottom: 1px solid lightgrey;
+	height: 2rem;
+}
+#divGestionAlumnos>p {
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divGestionAlumnos>p>select{
+	padding-left: 0.5rem;
+	min-width: 10%;
+}
+#divGestionAlumnos>p>label{
+	margin-right: 0.5rem;
+}
+#gestionAlumnosListado>div>.iconos{
+	position:absolute;
+	left: 90%;
+	white-space: nowrap;
+}
+#gestionAlumnosListado>div>.iconos>.icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#gestionAlumnosListado>div>.iconos>.icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+
+/* Reglas de VistaAltaModulo y VistaModificarModulo */
+
+.gestionModulo{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+.gestionModulo input{
+	margin: 0.3rem;
+}
+.gestionModulo .error{
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-left: 41%
+}
+.gestionModulo button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+.gestionModulo button:hover{
+	text-decoration: underline;
+}
+.gestionModulo p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+.gestionModulo p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+.gestionModulo p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+.gestionModulo p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+.gestionModulo>label{
+	display: block;
+	width: 30%;
+}
+
+.gestionModulo>label>input{
+	margin-left: 15%;
+}
+.gestionModulo>h1{
+	text-align: center;
+	color: blue;
+}
+.gestionModulo>.divFlex>input[type=text], .gestionModulo>.divFlex>select{
+	padding-left: 0.5rem;
+	margin: 4px;
+}
+.gestionModulo>.divFlex>select{
+	min-width: 20%;
+}
+
+/* Reglas de VistaGestionModulo */
+
+#divGestionModulos {
+	max-width: 90%;
+	margin: 1rem;
+	padding: 2rem;
+}
+#gestionModulosListado>div {
+	border-bottom: 1px solid lightgrey;
+	height: 2rem;
+}
+#divGestionModulos>p {
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divGestionModulos>p>select{
+	padding-left: 0.5rem;
+	min-width: 10%;
+}
+#divGestionModulos>p>label{
+	margin-right: 0.5rem;
+}
+#gestionModulosListado>div>.iconos{
+	position:absolute;
+	left: 90%;
+	white-space: nowrap;
+}
+#gestionModulosListado>div>.iconos>.icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#gestionModulosListado>div>.iconos>.icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+
+
+
+/* Reglas de VistaAltaActividad y VistaModificarActividad*/
+
+.gestionActividad{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+.gestionActividad input{
+	margin: 0.3rem;
+}
+.gestionActividad .error{
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-left: 41%
+}
+.gestionActividad button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+.gestionActividad button:hover{
+	text-decoration: underline;
+}
+.gestionActividad p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+.gestionActividad p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+.gestionActividad p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+.gestionActividad p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+.gestionActividad>label{
+	display: block;
+	width: 30%;
+}
+
+.gestionActividad>label>input{
+	margin-left: 15%;
+}
+.gestionActividad>h1{
+	text-align: center;
+	color: blue;
+}
+.gestionActividad>.divFlex>input[type=text], .gestionActividad>.divFlex>select{
+	padding-left: 0.5rem;
+	margin: 4px;
+}
+.gestionActividad>.divFlex>select{
+	min-width: 20%;
+}
+
+/*Reglas vista gestion Actividades*/
+#divGestionActividades {
+	max-width: 90%;
+	margin: 1rem;
+	padding: 2rem;
+}
+#gestionActividadesListado>div {
+	border-bottom: 1px solid lightgrey;
+	height: 2rem;
+}
+#divGestionActividades>p {
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divGestionActividades>p>select{
+	padding-left: 0.5rem;
+	min-width: 10%;
+}
+#divGestionActividades>p>label{
+	margin-right: 0.5rem;
+}
+#gestionActividadesListado>div>.iconos{
+	position:absolute;
+	left: 90%;
+	white-space: nowrap;
+}
+#gestionActividadesListado>div>.iconos>.icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#gestionActividadesListado>div>.iconos>.icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+span.actividad:hover {
+    color: blue;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Reglas de VistaAltaProfesor y VistaModificarProfesor */
+
+.gestionProfesor{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+.gestionProfesor input{
+	margin: 0.3rem;
+}
+.gestionProfesor .error{
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-left: 41%
+}
+.gestionProfesor button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+.gestionProfesor button:hover{
+	text-decoration: underline;
+}
+.gestionProfesor p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+.gestionProfesor p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+.gestionProfesor p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+.gestionProfesor p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+.gestionProfesor>label{
+	display: block;
+	width: 30%;
+}
+
+.gestionProfesor>label>input{
+	margin-left: 15%;
+}
+.gestionProfesor>h1{
+	text-align: center;
+	color: blue;
+}
+.gestionProfesor>.divFlex>input[type=text], .gestionProfesor>.divFlex>select{
+	padding-left: 0.5rem;
+	margin: 4px;
+}
+.gestionProfesor>.divFlex>select{
+	min-width: 20%;
+}
+
+/* Reglas de VistaGestionProfesor */
+
+#divGestionProfesores {
+	max-width: 90%;
+	margin: 1rem;
+	padding: 10rem 2rem;
+}
+#gestionProfesoresListado>div {
+	border-bottom: 1px solid lightgrey;
+	height: 2rem;
+}
+#divGestionProfesores>p {
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divGestionProfesores>p>select{
+	padding-left: 0.5rem;
+	min-width: 10%;
+}
+#divGestionProfesores>p>label{
+	margin-right: 0.5rem;
+}
+#gestionProfesoresListado>div>.iconos{
+	position:absolute;
+	left: 90%;
+	white-space: nowrap;
+}
+#gestionProfesoresListado>div>.iconos>.icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#gestionProfesoresListado>div>.iconos>.icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+span.profesor:hover{
+	color:blue;
+	cursor: pointer;
+	font-weight: bold;
+}
