@@ -114,9 +114,9 @@ export class VistaAltaProfesor extends Vista{
       this.errorEmail.style.display = 'none'
     }
     
-    mostrar(ver){
+    /*mostrar(ver){
     	super.mostrar(ver)
     	this.inputNombre.focus();
-    }
+    }*/
 
 }

@@ -20,6 +20,7 @@ export class VistaMenuCoordinador extends Vista {
     this.btnConvenios = this.base.getElementsByTagName('button')[3];
     this.btnActividades = this.base.getElementsByTagName('button')[4];
     this.btnModulos = this.base.getElementsByTagName('button')[5];
+    this.btnCiclos = this.base.getElementsByTagName('button')[6];
 
     // Asociamos eventos a los botones
     this.btnAlumnos.onclick = this.irAVistaAlumnos.bind(this);
@@ -28,6 +29,7 @@ export class VistaMenuCoordinador extends Vista {
     this.btnConvenios.onclick = this.irAVistaConvenios.bind(this);
     this.btnActividades.onclick = this.irAVistaActividades.bind(this);
     this.btnModulos.onclick = this.irAVistaModulos.bind(this);
+    this.btnCiclos.onclick = this.irAVistaCiclos.bind(this);
   }
 
   /**
@@ -69,5 +71,12 @@ export class VistaMenuCoordinador extends Vista {
    **/
   irAVistaActividades(){
     this.controlador.mostrarGestionActividades();
+  }
+  /**
+   * Navega a la vista de ciclos.
+   **/
+  irAVistaCiclos(){
+    
+    this.controlador.mostrarGestionCiclos();
   }
 }

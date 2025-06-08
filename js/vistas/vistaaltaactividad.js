@@ -17,8 +17,10 @@
      this.inputTitulo = document.getElementById('tituloActividad')
      this.inputDescripcion = document.getElementById('descripcionActividad')
      this.selectModulo = document.getElementById('selectModuloActividad')
+     this.selectCiclo = document.getElementById('selectCicloActividad')
  
      this.botonAlta = document.getElementById('btnAnadirAltaActividad')
+     this.botonAltaMultiple = document.getElementById('btnAnadirAltaActividadMultiple')
      this.botonLimpiar = document.getElementById('btnLimpiarAltaActividad')
      this.botonCancelar = document.getElementById('btnCancelarAltaActividad')
  
@@ -28,13 +30,42 @@
  
      // Asociamos eventos
      this.botonAlta.addEventListener("click", this.altaActividad.bind(this))
+     this.botonAltaMultiple.addEventListener("click", this.altaActividadMultiple.bind(this))
      this.botonLimpiar.addEventListener("click", this.limpiarCampos.bind(this))
      this.botonCancelar.addEventListener("click", this.cancelar.bind(this))
+     this.selectCiclo.addEventListener("change",this.mostrarModulosCiclo.bind(this))
+     this.archivo = document.getElementById('multiple')
  
      // Ejecutar metodos necesarios
  
    }
- 
+   /**
+    * Mostramos los modulos relacionados al ciclo
+    */
+   mostrarModulosCiclo() {
+    const ciclo = this.selectCiclo.value
+    
+   this.controlador.getModulosByCiclo(ciclo)
+    .then(modulos => {
+      const checkboxes = this.selectModulo.querySelectorAll('input[data-idModulo]');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.parentElement.style.display = 'none'; 
+      })
+      for (let i = 0; i < modulos.length; i++) {
+        const modulo = modulos[i];
+        const checkbox = Array.from(checkboxes).find(cb => cb.getAttribute('data-idModulo') === modulo.id.toString());
+        
+        
+         if (checkbox) {
+          checkbox.parentElement.style.display = 'block';
+        }
+      }
+        
+      })
+    
+    }
+   
    /**
     * Realiza el alta de una actividad.
     */
@@ -54,6 +85,34 @@
          this.limpiarCampos()
          this.cancelar()
        }
+     }
+
+    validarDocumento () {
+    const file = this.archivo.files[0]
+    console.log(this.archivo)
+    const tipoDocumento = file ? file.type : ''
+
+    const errorDocumento = document.getElementById('errorDocumento')
+    const maxSizeMB = 10 // Tamaño máximo permitido en megabytes
+
+    if (file && tipoDocumento === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      if (file.size <= maxSizeMB * 1024 * 1024) {
+        errorDocumento.textContent = ''
+        return true
+      } else {
+        errorDocumento.textContent = `El tamaño del archivo debe ser menor o igual a ${maxSizeMB} MB.`
+        return false
+      }
+    } else {
+      errorDocumento.textContent = 'El documento debe ser un archivo xlsx.'
+      return false
+    }
+  }
+      /**
+    * Realiza el alta de una actividad.
+    */
+     altaActividadMultiple() {
+      this.controlador.altaActividadMultiple()
      }
  
    /**
@@ -115,29 +174,59 @@
        this.errorDescripcion.style.display = 'none'
        this.errorModulo.style.display = 'none'
      }
+
+     /**
+      *   Muestra los modulos relacionados al curso
+      * 
+      */
+
  
    /**
     * Carga los datos de los cursos en el select.
     * @param modulos Lista de modulos.
     */
-   cargarDatos(modulos) {
+   cargarDatos() {
      // Limpiar las opciones existentes del select
+     this.selectCiclo.innerHTML = '';
      this.selectModulo.innerHTML = '';
- 
+     
      // Recorrer los cursos y agregar opciones al select
-     for(let i = 0; i < modulos.length; i++){
+     let option1 = document.createElement('option')
+      this.selectCiclo.appendChild(option1)
+        option1.value = ''
+        option1.textContent = 'Seleccione'
+        option1.disabled = 'true'
 
-       const div = document.createElement('div')
-        this.selectModulo.appendChild(div)
-        const input = document.createElement('input')
-          div.appendChild(input)
-          input.setAttribute('type', 'checkbox')
-          input.setAttribute('data-idModulo',  modulos[i].id)
-          const label = document.createElement('label')
-          div.appendChild(label)
-          label.textContent =  modulos[i].codigo + '. ' +  modulos[i].titulo
-          
-     }
-   }
+        this.controlador.recibirDatosCiclo()
+        .then(ciclos =>{
+          for (let i = 0; i < ciclos.length; i++) {
+            let option = document.createElement('option');
+            option.value = ciclos[i].id;
+            option.textContent = ciclos[i].siglas;
+            this.selectCiclo.appendChild(option);
+          }
+        })
+        
+        
+        this.controlador.getModulos()
+        .then(modulos => {
+
+          for(let i = 0; i < modulos.length; i++){
+
+            const div = document.createElement('div')
+             this.selectModulo.appendChild(div)
+             const input = document.createElement('input')
+               div.appendChild(input)
+               input.setAttribute('type', 'checkbox')
+               input.setAttribute('data-idModulo',  modulos[i].id)
+               const label = document.createElement('label')
+               div.appendChild(label)
+               label.textContent =  modulos[i].codigo + '. ' +  modulos[i].titulo
+               div.style.display = 'none'
+               
+          }
+        })
+      }
  }
- 
+
+

@@ -1,0 +1,228 @@
+SQL: DELETE FROM Actividad WHERE id = :id
+Parámetros: Array
+(
+    [:id] => 416
+)
+
+SQL: DELETE FROM Actividad_Curso WHERE id_actividad = :id
+Parámetros: Array
+(
+    [:id] => 416
+)
+
+SQL: DELETE FROM Actividad WHERE id = :id
+Parámetros: Array
+(
+    [:id] => 417
+)
+
+SQL: DELETE FROM Actividad_Curso WHERE id_actividad = :id
+Parámetros: Array
+(
+    [:id] => 417
+)
+
+SQL: DELETE FROM Actividad WHERE id = :id
+Parámetros: Array
+(
+    [:id] => 418
+)
+
+SQL: DELETE FROM Actividad_Curso WHERE id_actividad = :id
+Parámetros: Array
+(
+    [:id] => 418
+)
+
+SQL: DELETE FROM Actividad WHERE id = :id
+Parámetros: Array
+(
+    [:id] => 419
+)
+
+SQL: DELETE FROM Actividad_Curso WHERE id_actividad = :id
+Parámetros: Array
+(
+    [:id] => 419
+)
+
+SQL: DELETE FROM Actividad WHERE id = :id
+Parámetros: Array
+(
+    [:id] => 420
+)
+
+SQL: DELETE FROM Actividad_Curso WHERE id_actividad = :id
+Parámetros: Array
+(
+    [:id] => 420
+)
+
+SQL: INSERT INTO Actividad (titulo, descripcion) VALUES (:titulo, :descripcion)
+Parámetros: Array
+(
+    [:titulo] => actividad insertado 1
+    [:descripcion] => esto es una activiad insertada en masa
+)
+
+SQL: INSERT INTO Actividad_Modulo (id_actividad, id_modulo) VALUES (:actividad_id, :modulo_0),(:actividad_id, :modulo_1),(:actividad_id, :modulo_2)
+Parámetros: Array
+(
+    [:actividad_id] => 421
+    [:modulo_0] => 1
+    [:modulo_1] => 2
+    [:modulo_2] => 32
+)
+
+SQL: 
+                    INSERT INTO Actividad_Curso (id_actividad, id_curso, orden)
+                    SELECT DISTINCT 
+                        :actividad_id, 
+                        cm.id_curso,
+                        COALESCE(
+                            (SELECT MAX(ac.orden) + 1 FROM Actividad_Curso ac WHERE ac.id_curso = cm.id_curso),
+                            1
+                        ) AS nuevo_orden
+                    FROM Curso_Modulo cm
+                    WHERE cm.id_modulo IN (
+                        SELECT am.id_modulo FROM Actividad_Modulo am WHERE am.id_actividad = :actividad_id
+                    )
+                
+Parámetros: Array
+(
+    [:actividad_id] => 421
+)
+
+SQL: INSERT INTO Actividad (titulo, descripcion) VALUES (:titulo, :descripcion)
+Parámetros: Array
+(
+    [:titulo] => actividad insertado 2
+    [:descripcion] => esto es una activiad insertada en masa
+)
+
+SQL: INSERT INTO Actividad_Modulo (id_actividad, id_modulo) VALUES (:actividad_id, :modulo_0)
+Parámetros: Array
+(
+    [:actividad_id] => 422
+    [:modulo_0] => 8
+)
+
+SQL: 
+                    INSERT INTO Actividad_Curso (id_actividad, id_curso, orden)
+                    SELECT DISTINCT 
+                        :actividad_id, 
+                        cm.id_curso,
+                        COALESCE(
+                            (SELECT MAX(ac.orden) + 1 FROM Actividad_Curso ac WHERE ac.id_curso = cm.id_curso),
+                            1
+                        ) AS nuevo_orden
+                    FROM Curso_Modulo cm
+                    WHERE cm.id_modulo IN (
+                        SELECT am.id_modulo FROM Actividad_Modulo am WHERE am.id_actividad = :actividad_id
+                    )
+                
+Parámetros: Array
+(
+    [:actividad_id] => 422
+)
+
+SQL: INSERT INTO Actividad (titulo, descripcion) VALUES (:titulo, :descripcion)
+Parámetros: Array
+(
+    [:titulo] => actividad insertado 3
+    [:descripcion] => 
+)
+
+SQL: INSERT INTO Actividad_Modulo (id_actividad, id_modulo) VALUES (:actividad_id, :modulo_0)
+Parámetros: Array
+(
+    [:actividad_id] => 423
+    [:modulo_0] => 32
+)
+
+SQL: 
+                    INSERT INTO Actividad_Curso (id_actividad, id_curso, orden)
+                    SELECT DISTINCT 
+                        :actividad_id, 
+                        cm.id_curso,
+                        COALESCE(
+                            (SELECT MAX(ac.orden) + 1 FROM Actividad_Curso ac WHERE ac.id_curso = cm.id_curso),
+                            1
+                        ) AS nuevo_orden
+                    FROM Curso_Modulo cm
+                    WHERE cm.id_modulo IN (
+                        SELECT am.id_modulo FROM Actividad_Modulo am WHERE am.id_actividad = :actividad_id
+                    )
+                
+Parámetros: Array
+(
+    [:actividad_id] => 423
+)
+
+SQL: INSERT INTO Actividad (titulo, descripcion) VALUES (:titulo, :descripcion)
+Parámetros: Array
+(
+    [:titulo] => actividad insertado 4
+    [:descripcion] => esto es una activiad insertada en masa
+)
+
+SQL: INSERT INTO Actividad_Modulo (id_actividad, id_modulo) VALUES (:actividad_id, :modulo_0)
+Parámetros: Array
+(
+    [:actividad_id] => 424
+    [:modulo_0] => 8
+)
+
+SQL: 
+                    INSERT INTO Actividad_Curso (id_actividad, id_curso, orden)
+                    SELECT DISTINCT 
+                        :actividad_id, 
+                        cm.id_curso,
+                        COALESCE(
+                            (SELECT MAX(ac.orden) + 1 FROM Actividad_Curso ac WHERE ac.id_curso = cm.id_curso),
+                            1
+                        ) AS nuevo_orden
+                    FROM Curso_Modulo cm
+                    WHERE cm.id_modulo IN (
+                        SELECT am.id_modulo FROM Actividad_Modulo am WHERE am.id_actividad = :actividad_id
+                    )
+                
+Parámetros: Array
+(
+    [:actividad_id] => 424
+)
+
+SQL: INSERT INTO Actividad (titulo, descripcion) VALUES (:titulo, :descripcion)
+Parámetros: Array
+(
+    [:titulo] => actividad insertado 5
+    [:descripcion] => esto es una activiad insertada en masa
+)
+
+SQL: INSERT INTO Actividad_Modulo (id_actividad, id_modulo) VALUES (:actividad_id, :modulo_0),(:actividad_id, :modulo_1)
+Parámetros: Array
+(
+    [:actividad_id] => 425
+    [:modulo_0] => 12
+    [:modulo_1] => 32
+)
+
+SQL: 
+                    INSERT INTO Actividad_Curso (id_actividad, id_curso, orden)
+                    SELECT DISTINCT 
+                        :actividad_id, 
+                        cm.id_curso,
+                        COALESCE(
+                            (SELECT MAX(ac.orden) + 1 FROM Actividad_Curso ac WHERE ac.id_curso = cm.id_curso),
+                            1
+                        ) AS nuevo_orden
+                    FROM Curso_Modulo cm
+                    WHERE cm.id_modulo IN (
+                        SELECT am.id_modulo FROM Actividad_Modulo am WHERE am.id_actividad = :actividad_id
+                    )
+                
+Parámetros: Array
+(
+    [:actividad_id] => 425
+)
+

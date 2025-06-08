@@ -235,20 +235,27 @@ class DAOTarea{
 			BD::borrar($sql, $params);
 
 			//Las volvemos a insertar
-			if (count($tarea->actividades) > 0){
-				$sql = 'INSERT INTO Actividad_Tarea (id_actividad, id_tarea) VALUES ';
-				$values = array();
-				for ($i = 0; $i < count($tarea->actividades); $i++)
-					array_push($values, '('.$tarea->actividades[$i].', '.$tarea->id.')');
+			foreach ($tarea->actividades as $idActividad) {
+			$sql = 'SELECT 1 FROM Actividad_Tarea WHERE id_actividad = :id_actividad AND id_tarea = :id_tarea';
+			$params = ['id_actividad' => $idActividad, 'id_tarea' => $tarea->id];
+			$existe = BD::seleccionar($sql, $params);
 
-				$sql .= join(",", $values);
-
-				BD::insertar($sql);
+			if (count($existe) == 0) {
+				$sql = 'INSERT INTO Actividad_Tarea (id_actividad, id_tarea) VALUES (:id_actividad, :id_tarea)';
+				BD::insertar($sql, $params);
 			}
+		}
 
+
+		// Borrar relaciones previas
+		$sql = 'DELETE FROM Actividad_Modulo_Tarea WHERE id_tarea = :id_tarea';
+		$params = ['id_tarea' => $tarea->id];
+		BD::borrar($sql, $params);
 			//Insertamos la relación con Módulo y Actividad
+
+
 			//TODO: refactorizar con DaoTarea.insertar
-			$sql  = 'INSERT INTO Actividad_Modulo_Tarea (id_actividad, id_modulo, id_tarea) ';
+			$sql  = 'INSERT IGNORE INTO Actividad_Modulo_Tarea (id_actividad, id_modulo, id_tarea) ';
 			$sql .= 'SELECT Actividad_Modulo.id_actividad, id_modulo, id_tarea ';
 			$sql .= 'FROM Actividad_Modulo ';
 			$sql .= 'JOIN Actividad_Tarea ON Actividad_Modulo.id_actividad = Actividad_Tarea.id_actividad ';

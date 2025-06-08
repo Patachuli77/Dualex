@@ -13,94 +13,81 @@
      super(controlador)
      this.base = base
      this.modulos = []
+     this.ciclos = []
+     
      // Cogemos referencias a los elementos del interfaz
      this.listaActividades = document.getElementById('gestionActividadesListado')
-     this.listaActividadesSelect = document.getElementById('selectModuloListadoActividades')
- 
+     this.listaActividadesCicloSelect = document.getElementById('selectCicloListadoActividades')
+     this.listaActividadesModuloSelect = document.getElementById('selectModuloListadoActividades')
+     this.listaActividadesModuloP = document.getElementById('PModuloListadoActividades')
+    
      // Asociamos eventos
-     this.listaActividadesSelect.addEventListener("change",this.cargarFiltrado.bind(this))
+   
  
      // Ejecutar metodos necesarios
  
    }
- 
-   /**
-   * Carga los cursos en el select de la vista.
-   */
-  cargarFiltroModulos(){
-    if (this.modulos.length === 0) {
-      this.controlador.getModulos()
-        .then(modulos => {
-
-          let option1 = document.createElement('option')
-          this.listaActividadesSelect.appendChild(option1)
-          option1.value = ''
-          option1.textContent = 'Seleccione'
-          option1.disabled = 'true'
-
-          
-          for (let i = 0; i < modulos.length; i++) {
-            this.modulos[i] = modulos[i]
-            let option = document.createElement('option')
-            this.listaActividadesSelect.appendChild(option)
-            option.value = modulos[i].codigo
-            option.textContent = modulos[i].codigo
-          }
-        })
-        .catch(error => console.log(error))
-    }
-  }
   /**
    * Carga las actividades en el listado filtrados por modulo.
    */
   cargarFiltrado(){
-    this.listaActividades.innerHTML = ''
-    const modulo = this.listaActividadesSelect.value
-    this.controlador.getActividadesByModulo(modulo)
-      .then(actividades => {
-        if (actividades.length > 0){
-          for(let i=0; i<actividades.length; i++){
-              this.crearDivActividad(actividades[i])
-          }
-        } else {
-          const div = document.createElement('div')
-          this.listaActividades.appendChild(div)
-          div.textContent = 'No hay ninguna actividad que coincida.'
-        }
-      })
-  }
-  crearDivActividad (actividad){
 
-    const div = document.createElement('div')
-    this.listaActividades.appendChild(div)
 
-    const spanActividad= document.createElement('span')
-    div.appendChild(spanActividad)
-    spanActividad.classList.add('actividad')
-    spanActividad.textContent = `${actividad.titulo} `
-    spanActividad.addEventListener("click", () => this.modificarActividad(actividad))
-
+    this.controlador.getActividades().then(actividades => {
+      
+      this.crearDivActividad(actividades);
+    });
     
-
-    const spanIconos = document.createElement('span')
-    div.appendChild(spanIconos)
-    spanIconos.classList.add('iconos')
-
-    const spanIconoBorrar = document.createElement('img')
-    spanIconos.appendChild(spanIconoBorrar)
-    spanIconoBorrar.classList.add('icono')
-    spanIconoBorrar.src = 'iconos/delete.svg'
-    spanIconoBorrar.addEventListener("click", () => this.borrarActividad(actividad.id, actividad.titulo))
-
   }
+  crearDivActividad(actividades) {
+    // Inicializar la tabla si aún no lo está
+    if (!$.fn.DataTable.isDataTable('#tablaActividades')) {
+      $('#tablaActividades').DataTable();
+    }
+  
+    const tabla = $('#tablaActividades').DataTable();
+    tabla.clear(); // Limpiar datos existentes
+  
+    actividades.forEach(actividad => {
+      tabla.row.add([
+        `<span class="actividad" data-id="${actividad.id}" style="cursor:pointer">${actividad.titulo}</span>`,
+        `<span>${actividad.ciclos}</span>`,
+        `<span>${actividad.modulos}</span>`,
+        `<span class="iconos">
+           <img class="icono borrar" data-id="${actividad.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">
+         </span>`
+      ]);
+    });
+  
+    tabla.draw();
+  
+    // Evento para modificar actividad
+    $('#tablaActividades').off('click', 'span.actividad').on('click', 'span.actividad', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const actividad = actividades.find(a => a.id === id);
+      if (actividad) {
+        this.modificarActividad(actividad);
+      }
+    });
+  
+    // Evento para borrar actividad
+    $('#tablaActividades').off('click', 'img.icono').on('click', 'img.icono', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const actividad = actividades.find(a => a.id === id);
+      if (actividad) {
+        this.borrarActividad(actividad.id, actividad.titulo);
+      }
+    });
+  }
+
 
   /**
      * Redirige a la vista para modificar la actividad.
      * @param actividad {} Datos modificables del alumno.
      */
   modificarActividad (actividad) {
-    
-    this.controlador.mostrarModificarActividad(actividad, this.modulos)
+   
+    this.controlador.mostrarModificarActividad(actividad)
   }
 
   /**

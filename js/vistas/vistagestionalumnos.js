@@ -16,10 +16,10 @@ export class VistaGestionAlumnos extends Vista{
 
     // Cogemos referencias a los elementos del interfaz
     this.listaAlumnos = document.getElementById('gestionAlumnosListado')
-    this.listaAlumnosSelect = document.getElementById('selectCursoListadoAlumnos')
+    
 
     // Asociamos eventos
-    this.listaAlumnosSelect.addEventListener("change",this.cargarFiltrado.bind(this))
+    
 
     // Ejecutar metodos necesarios
 
@@ -28,78 +28,62 @@ export class VistaGestionAlumnos extends Vista{
   /**
    * Carga los cursos en el select de la vista.
    */
-  cargarFiltroCursos(){
-    if (this.cursos.length === 0) {
-      this.controlador.getCursos()
-        .then(cursos => {
-
-          let option1 = document.createElement('option')
-          this.listaAlumnosSelect.appendChild(option1)
-          option1.value = ''
-          option1.textContent = 'Seleccione'
-          option1.disabled = 'true'
-
-          for (let i = 0; i < cursos.length; i++) {
-            this.cursos[i] = cursos[i]
-            let option = document.createElement('option')
-            this.listaAlumnosSelect.appendChild(option)
-            option.value = cursos[i].codigo
-            option.textContent = cursos[i].codigo
-          }
-        })
-        .catch(error => console.log(error))
-    }
-  }
+  
 
   /**
    * Carga los alumnos en el listado filtrados por curso.
    */
   cargarFiltrado(){
-    this.listaAlumnos.innerHTML = ''
-    const curso = this.listaAlumnosSelect.value
-    this.controlador.getAlumnosByCurso(curso)
-      .then(alumnos => {
-        if (alumnos.length > 0){
-          for(let i=0; i<alumnos.length; i++){
-              this.crearDivAlumno(alumnos[i])
-          }
-        } else {
-          const div = document.createElement('div')
-          this.listaAlumnos.appendChild(div)
-          div.textContent = 'No hay ningún alumno que coincida.'
-        }
-      })
+
+    this.controlador.getAlumnos().then(alumnos => {
+      console.log(alumnos)
+      this.crearDivAlumno(alumnos);
+    });
   }
 
   /**
    Crea el div asociado a un alumno y lo añade a la base.
    @param alumno {Alumno} Datos del alumno.
    **/
-  crearDivAlumno (alumno){
-
-    const div = document.createElement('div')
-    this.listaAlumnos.appendChild(div)
-
-    const spanAlumno = document.createElement('span')
-    div.appendChild(spanAlumno)
-    spanAlumno.classList.add('alumno')
-    spanAlumno.textContent = `${alumno.nombre} ${alumno.apellidos} `
-    spanAlumno.addEventListener("click", () => this.modificarAlumno(alumno))
-
-    const spanAlumnoEmail = document.createElement('span')
-    div.appendChild(spanAlumnoEmail)
-    spanAlumnoEmail.textContent = `/ ${alumno.email}`
-
-    const spanIconos = document.createElement('span')
-    div.appendChild(spanIconos)
-    spanIconos.classList.add('iconos')
-
-    const spanIconoBorrar = document.createElement('img')
-    spanIconos.appendChild(spanIconoBorrar)
-    spanIconoBorrar.classList.add('icono')
-    spanIconoBorrar.src = 'iconos/delete.svg'
-    spanIconoBorrar.addEventListener("click", () => this.borrarAlumno(alumno.id, alumno.nombre))
-
+  crearDivAlumno (alumnos){
+    if (!$.fn.DataTable.isDataTable('#tablaAlumnos')) {
+      $('#tablaAlumnos').DataTable();
+    }
+  
+    const tabla = $('#tablaAlumnos').DataTable();
+    tabla.clear(); // Limpiar datos existentes
+  
+    alumnos.forEach(alumno => {
+      tabla.row.add([
+        `<span class="alumno" data-id="${alumno.id}" style="cursor:pointer">${alumno.apellidos}</span>`,
+        `<span>${alumno.nombre}</span>`,
+        `<span>${alumno.codigo}</span>`,
+        `<span>${alumno.email}</span>`,
+        `<span class="iconos">
+           <img class="icono borrar" data-id="${alumno.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">
+         </span>`
+      ]);
+    });
+  
+    tabla.draw();
+  
+    // Evento para modificar actividad
+    $('#tablaAlumnos').off('click', 'span.alumno').on('click', 'span.alumno', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const alumno = alumnos.find(a => a.id === id);
+      if (alumno) {
+        this.modificarAlumno(alumno, alumno.idCurso);
+      }
+    });
+  
+    // Evento para borrar actividad
+    $('#tablaAlumnos').off('click', 'img.icono').on('click', 'img.icono', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const alumno = alumnos.find(a => a.id === id);
+      if (alumno) {
+        this.borrarAlumno(alumno.id, alumno.nombre);
+      }
+    });
   }
 
   /**
@@ -116,7 +100,7 @@ export class VistaGestionAlumnos extends Vista{
    * @param alumno {} Datos modificables del alumno.
    */
   modificarAlumno (alumno) {
-    this.controlador.mostrarModificarAlumno(alumno, this.cursos)
+    this.controlador.mostrarModificarAlumno(alumno)
   }
 
 }

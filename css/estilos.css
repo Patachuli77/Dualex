@@ -27,11 +27,14 @@ fieldset{
 legend{
 	padding: 0 0.5rem;
 }
+td{
+	vertical-align: middle;
+}
 
 /* Inicialmente ocultamos las vistas */
 #divLogin, #divDialogo, #divAlumnos, #divTarea, #divTareas, #divInforme,
 #divCreditos, #divConvenio, #divConvenios, .gestionAlumno, #divGestionAlumnos,
-#divEmpresa, #divEmpresas, #divEditarEmpresa, #divMenuCoordinador, #divProfesores, #divAltaProfesor, #divModificarProfesor, #divGestionProfesores,.gestionActividad, #divGestionActividades, #divAltaActividad, #divGestionModulos{
+#divEmpresa, #divEmpresas, #divEditarEmpresa, #divMenuCoordinador, #divProfesores, #divAltaProfesor, #divModificarProfesor, #divGestionProfesores,.gestionActividad, #divGestionActividades, #divAltaActividad, #divGestionModulos, #divAltaModulo, #divModificarModulo, #divGestionCiclos, #divAltaCiclo, #divModificarCiclo{
 	display: none;
 }
 
@@ -227,6 +230,12 @@ legend{
 	padding: 2rem;
 	border-radius: 0.5rem;
 	box-shadow: 0.5rem 0.5rem 2rem grey;
+	
+}
+#divLogin .colocacion{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 #divLogin input{
 	margin: 0.3rem;
@@ -1057,6 +1066,32 @@ input.invalid {
 	font-style: italic;
 	font-size: 0.8rem;
 }
+
+#divInforme div.grid5{
+	display: grid;
+	grid-template-columns: 46% 10% 18% 10% 18%;
+	max-width: 97%;
+	border: none;
+}
+#divInforme div.grid5 div{
+	padding: 0.1rem;
+}
+#divInforme div.grid5 > div:nth-child(){
+	text-align: center;
+}
+#divInforme div.grid5 em{
+	font-style: italic;
+	font-size: 0.8rem;
+}
+
+
+
+
+
+
+
+
+
 #divInforme table{
 	margin: 2rem auto;
 }
@@ -1369,13 +1404,9 @@ span.alumno:hover{
   }
   
   #divEmpresas {
-    transition: opacity 1s;
-    width: 90%;
-    margin: auto;
-    margin-bottom: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+   max-width: 90%;
+    margin: 1rem;
+    padding: 10rem 2rem;
 }
 
 .empresa-info:hover{
@@ -1413,6 +1444,7 @@ span.alumno:hover{
 
 .icono.editar, .icono.borrar {
     width: 30%;
+	max-width: 32px;
     height: 30%;
 }
 
@@ -1874,3 +1906,126 @@ span.profesor:hover{
 	cursor: pointer;
 	font-weight: bold;
 }
+/* Reglas de VistaAltaAlumno y VistaModificarAlumno */
+
+.gestionCiclo{
+	width: 40%;
+	margin: 5rem auto;
+	padding: 2rem;
+	border: 2px solid blue;
+	border-radius: 1rem;
+	transition: opacity 1s;
+}
+.gestionCiclo input{
+	margin: 0.3rem;
+}
+.gestionCiclo .error{
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-left: 41%
+}
+.gestionCiclo button{
+	cursor: pointer;
+	background-color: blue;
+	border: none;
+	color: white;
+	margin: 1rem;
+	margin-left: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1.2rem;
+}
+.gestionCiclo button:hover{
+	text-decoration: underline;
+}
+.gestionCiclo p{
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+}
+.gestionCiclo p:first-of-type{
+	cursor: pointer;
+	color: blue;
+}
+.gestionCiclo p:first-of-type:hover{
+	text-decoration: underline;
+}
+/* Párrafo de Error */
+.gestionCiclo p:nth-of-type(2){
+	display: none;
+	color: red;
+	font-weight: bold;
+}
+
+.gestionCiclo>label{
+	display: block;
+	width: 30%;
+}
+
+.gestionCiclo>label>input{
+	margin-left: 15%;
+}
+.gestionCiclo>h1{
+	text-align: center;
+	color: blue;
+}
+.gestionCiclo>.divFlex>input[type=text], .gestionCiclo>.divFlex>select{
+	padding-left: 0.5rem;
+	margin: 4px;
+}
+.gestionCiclo>.divFlex>select{
+	min-width: 20%;
+}
+
+/* Reglas de VistaGestionProfesor */
+
+#divGestionCiclos {
+	max-width: 90%;
+	margin: 1rem;
+	padding: 10rem 2rem;
+}
+#gestionCiclosListado>div {
+	border-bottom: 1px solid lightgrey;
+	height: 2rem;
+}
+#divGestionCiclos>p {
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divGestionCiclos>p>select{
+	padding-left: 0.5rem;
+	min-width: 10%;
+}
+#divGestionCiclos>p>label{
+	margin-right: 0.5rem;
+}
+#gestionCiclosListado>div>.iconos{
+	position:absolute;
+	left: 90%;
+	white-space: nowrap;
+}
+#gestionCiclosListado>div>.iconos>.icono{
+	display: inline;
+	width: 1.5rem;
+	cursor: pointer;
+}
+#gestionCiclosListado>div>.iconos>.icono:hover{
+	background-color: lightblue;
+	border-radius: 0.7rem;
+}
+span.ciclo:hover{
+	color:blue;
+	cursor: pointer;
+	font-weight: bold;
+}
+ span.codigo{
+
+padding: 5px;
+    border-radius: 10px;
+	
+ }
+

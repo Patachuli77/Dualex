@@ -57,7 +57,7 @@ export class VistaMenu extends Vista{
     this.limpiar()
     this.verUsuario()
     this.verTitulo('Acerca de DUALEX')
-    if (this.controlador.getUsuario().rol === 'profesor') { this.base.appendChild(this.crearIcono('volver.svg', 2, 'volver', this.controlador.mostrarAlumnos.bind(this.controlador, false))) } else { this.base.appendChild(this.crearIcono('volver.svg', 2, 'volver', this.controlador.mostrarTareasAlumno.bind(this.controlador, this.controlador.getUsuario()))) }
+    if (this.controlador.getUsuario().rol === 'profesor' || this.controlador.getUsuario().rol === 'coordinador') { this.base.appendChild(this.crearIcono('volver.svg', 2, 'volver', this.controlador.mostrarAlumnos.bind(this.controlador, false))) } else { this.base.appendChild(this.crearIcono('volver.svg', 2, 'volver', this.controlador.mostrarTareasAlumno.bind(this.controlador, this.controlador.getUsuario()))) }
     this.verLogout(3)
     this.verAcercaDe()
   }
@@ -202,15 +202,16 @@ export class VistaMenu extends Vista{
   }
 
 
-  /*editarEmpresa () {
+  editarEmpresa () {
     this.limpiar()
     this.verUsuario()
     if (this.controlador.getUsuario().rol === 'coordinador') {
       this.verTitulo('Editar empresa')
     }
+     this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.irAVistaEmpresas.bind(this.controlador, false)))
     this.verLogout(2)
     this.verAcercaDe()
-  }*/
+  }
   verConvenios () {
     this.limpiar()
     this.verUsuario()
@@ -262,7 +263,24 @@ export class VistaMenu extends Vista{
     h1.appendChild(document.createTextNode('Listado de Modulos'))
     h1.appendChild(this.crearIconoAyuda('Muestra el listado de modulos para ser gestionados por el coordinador'))
     this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarAlumnos.bind(this.controlador, false)));
-    //this.base.appendChild(this.crearIcono('add.svg', 2, 'nuevo alumno', this.controlador.mostrarAltaAlumno.bind(this.controlador, null)))
+    this.base.appendChild(this.crearIcono('add.svg', 2, 'nuevo modulo', this.controlador.mostrarAltaModulo.bind(this.controlador, null)))
+    this.verLogout(2)
+    this.verAcercaDe()
+  }
+
+   /**
+   Muestra el menú asociado a la lista de gestión de ciclos.
+   El menú incluye: título, logout y add.
+   **/
+   verGestionCiclos () {
+    this.limpiar()
+    this.verUsuario()
+    const h1 = document.createElement('h1')
+    this.base.appendChild(h1)
+    h1.appendChild(document.createTextNode('Listado de Ciclos'))
+    h1.appendChild(this.crearIconoAyuda('Muestra el listado de ciclos para ser gestionados por el coordinador'))
+    this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarAlumnos.bind(this.controlador, false)));
+    this.base.appendChild(this.crearIcono('add.svg', 2, 'nuevo ciclo', this.controlador.mostrarAltaCiclo.bind(this.controlador, null)))
     this.verLogout(2)
     this.verAcercaDe()
   }
@@ -281,6 +299,17 @@ export class VistaMenu extends Vista{
     h1.appendChild(this.crearIconoAyuda('Muestra el listado de actividades para ser gestionados por el profesor o coordinador'))
     this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarAlumnos.bind(this.controlador, false)));
     this.base.appendChild(this.crearIcono('add.svg', 2, 'nuevo alumno', this.controlador.mostrarAltaActividad.bind(this.controlador, null)))
+    this.verLogout(2)
+    this.verAcercaDe()
+  }
+   verAltaCiclo () {
+    this.limpiar()
+    this.verUsuario()
+    const h1 = document.createElement('h1')
+    this.base.appendChild(h1)
+    h1.appendChild(document.createTextNode('Alta de Ciclo'))
+    h1.appendChild(this.crearIconoAyuda('Muestra el el formulario para dar de alta a un ciclo'))
+    this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarGestionCiclos.bind(this.controlador, false)));
     this.verLogout(2)
     this.verAcercaDe()
   }
@@ -314,6 +343,21 @@ export class VistaMenu extends Vista{
     this.verLogout(2)
     this.verAcercaDe()
   }
+  /**
+   Muestra el menú asociado a el alta de modulos.
+   El menú incluye: título, logout y retorno.
+   **/
+   verAltaModulo () {
+    this.limpiar()
+    this.verUsuario()
+    const h1 = document.createElement('h1')
+    this.base.appendChild(h1)
+    h1.appendChild(document.createTextNode('Alta de Modulo'))
+    h1.appendChild(this.crearIconoAyuda('Muestra el el formulario para crear un modulo'))
+    this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarGestionModulos.bind(this.controlador, false)));
+    this.verLogout(2)
+    this.verAcercaDe()
+  }
 
   verModificarAlumno () {
     this.limpiar()
@@ -323,6 +367,30 @@ export class VistaMenu extends Vista{
     h1.appendChild(document.createTextNode('Modificar Alumno'))
     h1.appendChild(this.crearIconoAyuda('Muestra el el formulario para modificar los datos de un alumno'))
     this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarGestionAlumnos.bind(this.controlador, false)));
+    this.verLogout(2)
+    this.verAcercaDe()
+  }
+
+  verModificarModulo () {
+    this.limpiar()
+    this.verUsuario()
+    const h1 = document.createElement('h1')
+    this.base.appendChild(h1)
+    h1.appendChild(document.createTextNode('Modificar Modulo'))
+    h1.appendChild(this.crearIconoAyuda('Muestra el el formulario para modificar los datos de un modulo'))
+    this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarGestionModulos.bind(this.controlador, false)));
+    this.verLogout(2)
+    this.verAcercaDe()
+  }
+
+  verModificarCiclo () {
+    this.limpiar()
+    this.verUsuario()
+    const h1 = document.createElement('h1')
+    this.base.appendChild(h1)
+    h1.appendChild(document.createTextNode('Modificar Ciclo'))
+    h1.appendChild(this.crearIconoAyuda('Muestra el el formulario para modificar los datos de un ciclo'))
+    this.base.appendChild(this.crearIcono('volver.svg', 1, 'volver', this.controlador.mostrarGestionCiclos.bind(this.controlador, false)));
     this.verLogout(2)
     this.verAcercaDe()
   }

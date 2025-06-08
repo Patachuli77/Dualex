@@ -52,18 +52,25 @@ export class Vistaconvenio extends Vista {
    */
   cargarDatos () {
 	this.limpiar()
-    for (const option of this.selectCiclo.querySelectorAll('option'))
+  this.selectCiclo.innerHTML = ''
+  this.selectEmpresa.innerHTML = ''
+   /* for (const option of this.selectCiclo.querySelectorAll('option'))
       option.remove()
     for (const option of this.selectEmpresa.querySelectorAll('option'))
-      option.remove()
+      option.remove()*/
     // Si el boton es editar, se cambia a añadir
     if (this.btnAnadir.innerHTML === 'Editar') {
       this.avisoParrafo.textContent = ''
       this.btnAnadir.innerHTML = 'Añadir'
       this.btnAnadir.onclick = this.anadirConvenio.bind(this)
     }
-    this.cargarDatosCiclos()
+    return Promise.all([
+      this.cargarDatosCiclos(),
     this.cargarDatosEmpresas()
+
+
+    ])
+   
   }
 
   ocultarMensajesErrores () {
@@ -79,13 +86,14 @@ export class Vistaconvenio extends Vista {
    * Carga los ciclos en el select de ciclos.
    */
   cargarDatosCiclos () {
-    this.controlador.recibirDatosCiclo()
+    return this.controlador.recibirDatosCiclo()
       .then(ciclos => {
         ciclos.forEach(ciclo => {
           const option = document.createElement('option')
           option.value = ciclo.id
           option.textContent = ciclo.nombre
           this.selectCiclo.appendChild(option)
+          console.log(ciclo)
         })
       })
       .catch(error => {
@@ -97,7 +105,7 @@ export class Vistaconvenio extends Vista {
    * Carga las empresas en el select de empresas.
    */
   cargarDatosEmpresas () {
-    this.controlador.recibirDatosEmpresa()
+   return this.controlador.recibirDatosEmpresa()
       .then(empresas => {
         empresas.forEach(empresa => {
           const option = document.createElement('option')
@@ -252,13 +260,19 @@ export class Vistaconvenio extends Vista {
   	super.mostrar(ver)
   	if (ver) {
       this.inputTitulo.focus()
-      this.cargarDatos()
+
+      this.cargarDatos().then(() => {
+      if (datosConvenio) {
+        this.cargarEdicionConvenios(datosConvenio);
+      }
+    });
+     // this.cargarDatos()
     }
-    if (datosConvenio) {
+    /*if (datosConvenio) {
       setTimeout(() => {
         this.cargarEdicionConvenios(datosConvenio)
       }, 25)
-    }
+    }*/
   }
 
   /**
@@ -268,11 +282,13 @@ export class Vistaconvenio extends Vista {
   cargarEdicionConvenios (datosConvenio) {
     this.documentoConvenioE = datosConvenio[0].documento
     this.idConvenio = datosConvenio[0].id
-
+    console.log(datosConvenio[0].id_ciclo)
     // Relleno los campos con los datos del convenio
     this.inputTitulo.value = datosConvenio[0].titulo
     this.inputFechaFirma.value = datosConvenio[0].fecha_firma
-    this.selectCiclo.value = datosConvenio[0].id_ciclo
+   this.selectCiclo.value = String(datosConvenio[0].id_ciclo)
+console.log(this.selectCiclo.value)
+   
     this.selectEmpresa.value = datosConvenio[0].id_empresa
 
     // El boton de añadir se cambia a editar

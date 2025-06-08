@@ -118,9 +118,9 @@ export class VistaModificarProfesor extends Vista{
 
   }
 
-	mostrar(ver){
+	/*mostrar(ver){
     super.mostrar(ver)
     this.inputNombre.focus();
-  }
+  }*/
 
 }

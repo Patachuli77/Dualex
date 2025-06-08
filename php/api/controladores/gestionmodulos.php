@@ -14,7 +14,15 @@ class GestionModulos{
     @return {Array[Ciclo]}
      **/
     function get($pathParams, $queryParams, $usuario){
-        $resultado = DAOGestionModulos::verModulosByCurso($queryParams['curso']);
+        $resultado = [];
+        if (isset($queryParams['curso'])){
+            $resultado = DAOGestionModulos::verModulosByCurso($queryParams['curso']);
+        } elseif (isset($queryParams['ciclo'])) {
+            $resultado = DAOGestionModulos::verModulosByCiclo($queryParams['ciclo']);
+        } else{
+
+            $resultado = DAOGestionModulos::verModulos();
+        }
         $json = json_encode($resultado);
         header('Content-type: application/json; charset=utf-8');
         header('HTTP/1.1 200 OK');
@@ -22,9 +30,9 @@ class GestionModulos{
         die();
     }
 
-   /* function delete($pathParams, $queryParams, $usuario){
+   function delete($pathParams, $queryParams, $usuario){
         if ($usuario->rol == 'profesor' || $usuario->rol == 'coordinador'){
-            DAOGestionAlumnos::eliminarAlumno($pathParams[0]);
+            DAOGestionModulos::eliminarModulo($pathParams[0]);
             header('HTTP/1.1 200 OK');
             die();
         }
@@ -34,9 +42,10 @@ class GestionModulos{
         }
     }
 
-    function post($pathParams, $queryParams, $alumno, $usuario){
+    function post($pathParams, $queryParams, $modulo, $usuario){
+       
         if ($usuario->rol == 'profesor' || $usuario->rol == 'coordinador'){
-            DAOGestionAlumnos::insertarAlumno($alumno);
+            DAOGestionModulos::insertarModulo($modulo);
             header('HTTP/1.1 200 OK');
             die();
         }
@@ -46,9 +55,9 @@ class GestionModulos{
         }
     }
 
-    function put($pathParams, $queryParams, $alumno, $usuario){
+    function put($pathParams, $queryParams, $modulo, $usuario){
         if ($usuario->rol == 'profesor' || $usuario->rol == 'coordinador'){
-            DAOGestionAlumnos::actualizarAlumno($alumno);
+            DAOGestionModulos::actualizarModulo($modulo);
             header('HTTP/1.1 200 OK');
             die();
         }
@@ -56,6 +65,6 @@ class GestionModulos{
             header('HTTP/1.1 401 Unauthorized');
             die();
         }
-    }*/
+    }
 
 }

@@ -21,113 +21,57 @@ export class VistaConvenios extends Vista {
    * Carga los convenios en la tabla del listado.
    */
   cargarDatosConvenios () {
-    this.controlador.recibirDatosConvenios()
-      .then(convenios => {
-        // Limpiar contenido actual de la tabla
-        this.tablaConvenios.innerHTML = ''
+    
+  this.controlador.recibirDatosConvenios()
+    .then(convenios => {
+      // Inicializar DataTable si no está ya inicializada
+      if (!$.fn.DataTable.isDataTable('#tablaConvenios')) {
+        $('#tablaConvenios').DataTable();
+      }
 
-        if (!convenios || convenios.length === 0)
-          throw new Error('No hay convenios registrados')
+      const tabla = $('#tablaConvenios').DataTable();
+      tabla.clear(); // Limpiar tabla
 
-        // Crear encabezados
-        const encabezados = document.createElement('tr')
+      if (!convenios || convenios.length === 0)
+        throw new Error('No hay convenios registrados');
 
-        // Crear th
-        const thTitulo = document.createElement('th')
-        thTitulo.textContent = 'Título'
+      // Agregar filas
+      convenios.forEach(convenio => {
+        tabla.row.add([
+          `<span class="convenio" data-id="${convenio.id}" style="cursor:pointer">${convenio.titulo}</span>`,
+          `<span>${convenio.fecha_firma}</span>`,
+          `<span>${convenio.nombreEmpresa}</span>`,
+          `<span>${convenio.nombreCiclo}</span>`,
+          `<button class="boton-ver-convenios" data-doc="${convenio.documento}" data-titulo="${convenio.titulo}">Ver Convenio</button>`,
+          `<img class="icono editar" data-id="${convenio.id}" src="iconos/edit.svg" style="cursor:pointer" title="Editar">`,
+          `<img class="icono borrar" data-id="${convenio.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">`
+        ]);
+      });
 
-        const thFechaFirma = document.createElement('th')
-        thFechaFirma.textContent = 'Fecha Firma'
+      tabla.draw();
 
-        const thEmpresa = document.createElement('th')
-        thEmpresa.textContent = 'Empresa'
+      // Eventos
+      $('#tablaConvenios').off('click', '.boton-ver-convenios').on('click', '.boton-ver-convenios', (e) => {
+        const doc = $(e.currentTarget).data('doc');
+        const titulo = $(e.currentTarget).data('titulo');
+        this.mostrarConvenio(doc, titulo);
+      });
 
-        const thCiclo = document.createElement('th')
-        thCiclo.textContent = 'Ciclo'
+      $('#tablaConvenios').off('click', '.icono.editar').on('click', '.icono.editar', (e) => {
+        const id = $(e.currentTarget).data('id');
+        this.clickEditarConvenio(id);
+      });
 
-        const thVerConvenio = document.createElement('th')
-        thVerConvenio.textContent = 'Ver Convenio'
+      $('#tablaConvenios').off('click', '.icono.borrar').on('click', '.icono.borrar', (e) => {
+        const id = $(e.currentTarget).data('id');
+        this.clickBorrarConvenio(id);
+      });
 
-        const thModificar = document.createElement('th')
-        thModificar.textContent = 'Modificar'
-
-        const thBorrar = document.createElement('th')
-        thBorrar.textContent = 'Borrar'
-
-        // Añadir celdas de th a la fila de encabezados
-        encabezados.appendChild(thTitulo)
-        encabezados.appendChild(thFechaFirma)
-        encabezados.appendChild(thEmpresa)
-        encabezados.appendChild(thCiclo)
-        encabezados.appendChild(thVerConvenio)
-        encabezados.appendChild(thModificar)
-        encabezados.appendChild(thBorrar)
-
-        // Añadir fila de encabezados al thead de la tabla
-        const cabeceraTabla = this.tablaConvenios.createTHead()
-        cabeceraTabla.appendChild(encabezados)
-
-        // Sobre cada convenio crear fila de la tabla
-        convenios.forEach(convenio => {
-          const fila = document.createElement('tr')
-
-          // Creacion de celdas
-          const tituloCelda = document.createElement('td')
-          tituloCelda.textContent = convenio.titulo
-
-          const fechaFirmaCelda = document.createElement('td')
-          fechaFirmaCelda.textContent = convenio.fecha_firma
-
-          const empresaCelda = document.createElement('td')
-          empresaCelda.textContent = convenio.nombreEmpresa
-
-          const cicloCelda = document.createElement('td')
-          cicloCelda.textContent = convenio.nombreCiclo
-
-          // Crear el botón para ver el convenio
-          const verConvenioCelda = document.createElement('td')
-          const botonVerConvenio = document.createElement('button')
-          botonVerConvenio.textContent = 'Ver Convenio'
-          botonVerConvenio.className = 'boton-ver-convenios'
-          // Asociar evento para visualizar el documento
-          botonVerConvenio.onclick = () => this.mostrarConvenio(convenio.documento, convenio.titulo)
-          verConvenioCelda.appendChild(botonVerConvenio)
-
-          // Crear el icono para modificar el convenio
-          const modificarCelda = document.createElement('td')
-          const editarImg = document.createElement('img')
-          editarImg.src = './iconos/edit.svg'
-          editarImg.classList.add('icono', 'editar')
-          editarImg.alt = 'Editar'
-          editarImg.onclick = () => this.clickEditarConvenio(convenio.id) // Asociar evento para editar
-          modificarCelda.appendChild(editarImg)
-
-          // Crear el icono para borrar el convenio
-          const borrarCelda = document.createElement('td')
-          const borrarImg = document.createElement('img')
-          borrarImg.src = './iconos/delete.svg'
-          borrarImg.classList.add('icono', 'borrar')
-          borrarImg.alt = 'Borrar'
-          borrarImg.onclick = () => this.clickBorrarConvenio(convenio.id) // Asociar evento para borrar
-          borrarCelda.appendChild(borrarImg)
-
-          // Añadir las celdas a la fila
-          fila.appendChild(tituloCelda)
-          fila.appendChild(fechaFirmaCelda)
-          fila.appendChild(empresaCelda)
-          fila.appendChild(cicloCelda)
-          fila.appendChild(verConvenioCelda)
-          fila.appendChild(modificarCelda)
-          fila.appendChild(borrarCelda)
-
-          // Añadir la fila a la tabla
-          this.tablaConvenios.appendChild(fila)
-        })
-      })
-      .catch(error => {
-        this.controlador.gestionarError(error)
-      })
-  }
+    })
+    .catch(error => {
+      this.controlador.gestionarError(error);
+    });
+}
 
   /**
    * Muestra el convenio en una nueva ventana.

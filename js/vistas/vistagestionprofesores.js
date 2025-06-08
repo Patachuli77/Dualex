@@ -25,28 +25,63 @@ export class VistaGestionProfesores extends Vista{
    * Carga los profesores en el listado filtrados por curso.
    */
   cargarFiltrado(){
-    this.limpiar()
-    this.controlador.getProfesores()
-      .then(profesores => {
-        if (profesores.length > 0){
-          for(let i=0; i<profesores.length; i++){
-              this.crearDivProfesor(profesores[i])
-          }
-        } else {
-          const div = document.createElement('div')
-          this.base.appendChild(div)
-          div.textContent = 'No hay ningún profesor que coincida.'
-        }
-      })
+    //this.limpiar()
+   
+    this.controlador.getProfesores().then(profesores => {
+     
+      this.crearDivProfesor(profesores);
+    });
   }
 
   /**
    Crea el div asociado a un profesor y lo añade a la base.
    @param profesor {Profesor} Datos del profesor.
    **/
-  crearDivProfesor (profesor){
+  crearDivProfesor (profesores){
+    
+    if (!$.fn.DataTable.isDataTable('#tablaProfesores')) {
+      $('#tablaProfesores').DataTable();
+    
+    }
 
-    const div = document.createElement('div')
+    const tabla = $('#tablaProfesores').DataTable();
+    tabla.clear();
+
+    profesores.forEach(profesor =>{
+       
+      tabla.row.add([
+        `<span class="profesor" data-id="${profesor.id }" style="cursor:pointer">${profesor.apellidos}</span>`,
+        `<span>${profesor.nombre}</span>`,
+        `<span>${profesor.email}</span>`,
+        `<span class="iconos">
+           <img class="icono borrar" data-id="${profesor.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">
+         </span>`
+
+      ]);
+
+    });
+
+
+    tabla.draw();
+
+    //evento modificar
+    $('#tablaProfesores').off('click', 'span.profesor').on('click', 'span.profesor', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const profesor = profesores.find(a => a.id === id);
+      if (profesor) {
+        this.modificarProfesor(profesor);
+      }
+    });
+
+    $('#tablaProfesores').off('click', 'img.icono').on('click', 'img.icono', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const profesor = profesores.find(a => a.id === id);
+      if (profesor) {
+        this.borrarProfesor(profesor.id, profesor.nombre);
+      }
+    });
+
+    /*const div = document.createElement('div')
     this.listaProfesores.appendChild(div)
 
     const spanProfesor = document.createElement('span')
@@ -68,7 +103,7 @@ export class VistaGestionProfesores extends Vista{
     spanIconoBorrar.classList.add('icono')
     spanIconoBorrar.src = 'iconos/delete.svg'
     spanIconoBorrar.addEventListener("click", () => this.borrarProfesor(profesor.id, profesor.nombre))
-
+    */
   }
 
   /**
@@ -88,11 +123,5 @@ export class VistaGestionProfesores extends Vista{
     this.controlador.mostrarModificarProfesor(profesor)
   }
 
-  /**
-   * Limpia la lista de profesores.
-   */
-  limpiar() {
-    this.listaProfesores.innerHTML = ''
-  }
 
 }

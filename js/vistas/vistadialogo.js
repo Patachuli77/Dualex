@@ -22,8 +22,8 @@ export class VistaDialogo extends Vista {
     this.btnAceptar = this.base.getElementsByTagName('button')[1]
 
     // Asociamos eventos
-    this.btnCerrar.onclick = this.cerrar.bind(this)
-    this.btnCancelar.onclick = this.cerrar.bind(this)
+    this.btnCerrar.onclick = this.cancelar.bind(this)
+    this.btnCancelar.onclick = this.cancelar.bind(this)
     this.btnAceptar.onclick = this.aceptar.bind(this)
   }
 
@@ -34,11 +34,28 @@ export class VistaDialogo extends Vista {
     @param mensaje {String} Mensaje del diálogo.
     @param callback {Function} Función que se llamará al cerrar el diálogo.
   **/
-  abrir (titulo, texto, callback) {
+  abrir (titulo, texto, callback, cambio = false) {
     this.hTitulo.textContent = titulo
     this.pMensaje.textContent = texto
     this.callback = callback
-    this.mostrar()
+
+    if (cambio) {
+    this.btnAceptar.style.backgroundColor = 'green'
+    this.btnAceptar.style.color = 'white'
+
+    this.btnCancelar.style.backgroundColor = 'red'
+    this.btnCancelar.style.color = 'white'
+    
+  } else {
+    // Restaurar estilo por defecto si es necesario
+    this.btnAceptar.style.backgroundColor = ''
+    this.btnAceptar.style.color = ''
+
+    this.btnCancelar.style.backgroundColor = ''
+    this.btnCancelar.style.color = ''
+    
+  }
+   this.mostrar()
   }
 
   /**

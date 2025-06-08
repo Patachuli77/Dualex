@@ -15,12 +15,24 @@ class gestionprofesores{
      **/
     function get($pathParams, $queryParams, $usuario){
         if ($usuario->rol == 'coordinador'){
-        	$resultado = DAOGestionProfesores::verProfesores();
-      	  $json = json_encode($resultado);
-        	header('Content-type: application/json; charset=utf-8');
-        	header('HTTP/1.1 200 OK');
-        	echo $json;
-        	die();
+            if(isset($queryParams['modulo'])){
+                error_log("ID del módulo recibido: " . $queryParams['modulo']);
+                $resultado = DAOGestionProfesores::verProfesoresByModulo((object)['id' => $queryParams['modulo']]);
+                $json = json_encode($resultado);
+                header('Content-type: application/json; charset=utf-8');
+                header('HTTP/1.1 200 OK');
+                echo $json;
+                die();
+
+            } else{
+                $resultado = DAOGestionProfesores::verProfesores();
+                $json = json_encode($resultado);
+                header('Content-type: application/json; charset=utf-8');
+                header('HTTP/1.1 200 OK');
+                echo $json;
+                die();
+            }
+        	
         }
         else{
             header('HTTP/1.1 401 Unauthorized');

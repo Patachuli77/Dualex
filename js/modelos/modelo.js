@@ -21,7 +21,12 @@ export class Modelo {
   getAlumnosProfesor () {
     return Rest.get('alumno', ['profesor'])
   }
+  getProfesoresByModulo(modulo){
+    const queryParams = new Map()
+    queryParams.set('modulo', modulo)
+    return Rest.get('gestionprofesores', [], queryParams)
 
+  }
   /**
     Devuelve la lista de tareas de un alumno.
     @param alumno {Alumno} Datos del alumno.
@@ -38,9 +43,26 @@ export class Modelo {
     @param idCurso {Number} Identificador del curso.
     @return {Promise} Devuelve la promesa asociada a la petición.
   **/
-  getActividades (idCurso) {
+  getActividadesCurso (idCurso) {
     return Rest.get('actividad', [idCurso])
   }
+  /*
+  lista todas activivdades
+  
+  */
+  getActividades () {
+    return Rest.get('gestionactividades')
+  }
+
+  /*
+  lista todos los ciclos
+  
+  */
+
+  getCiclos () {
+    return Rest.get('gestionciclos')
+  }
+  
   
   /**
    Devuelve la lista de las actividades por modulo.
@@ -129,11 +151,18 @@ export class Modelo {
   }
 
   /**
-    Devuelve la lista de ciclos definidos.
+    Devuelve la lista de cursos definidos.
     @return {Promise} Devuelve la promesa asociada a la petición.
   **/
     getCursos () {
       return Rest.get('curso')
+    }
+  /**
+   *  Devuelve la lista de ciclos definidos.
+     @return {Promise} Devuelve la promesa asociada a la petición.
+   */
+     getCiclos () {
+      return Rest.get('ciclo')
     }
 
     /**
@@ -209,10 +238,8 @@ export class Modelo {
    La lista está formada por los alumnos que están asignados a un curso.
    @return {Promise} Devuelve la promesa asociada a la petición.
    **/
-  getAlumnosByCurso (curso) {
-    const queryParams = new Map()
-    queryParams.set('curso', curso)
-    return Rest.get('gestionalumnos', [], queryParams)
+  getAlumnos() {
+    return Rest.get('gestionalumnos')
   }
   /**
    Devuelve la lista de modulos por curso.
@@ -224,6 +251,30 @@ export class Modelo {
     queryParams.set('curso', curso)
     return Rest.get('gestionmodulos', [], queryParams)
   }
+/**
+   Devuelve la lista de modulos por curso.
+   La lista está formada por los modulos que están asignados a un curso.
+   @return {Promise} Devuelve la promesa asociada a la petición.
+   **/
+   getModulosByCiclo (ciclo) {
+    const queryParams = new Map()
+    queryParams.set('ciclo', ciclo)
+    return Rest.get('gestionmodulos', [], queryParams)
+  }
+
+  getCursosByCiclo(ciclo){
+  
+    const queryParams = new Map()
+    queryParams.set('ciclo', ciclo)
+    return Rest.get('gestionciclos', [], queryParams)
+  }
+
+
+
+verModulos(){
+  return Rest.get('gestionmodulos')
+}
+
 
   /**
    Borrar un alumno.
@@ -233,6 +284,11 @@ export class Modelo {
   borrarAlumno (alumnoId) {
     return Rest.delete('gestionalumnos', [alumnoId])
   }
+
+desactivarModulo(moduloId){
+  
+return Rest.delete('gestionmodulos', [moduloId])
+}
 
    /**
    Borrar un actividad.
@@ -244,12 +300,48 @@ export class Modelo {
   }
 
   /**
+   Borrar un actividad.
+   @param cicloId {Number} Identificador de la actividad.
+   @return {Promise} Devuelve la promesa asociada a la petición.
+   **/
+   borrarCiclo (cicloId) {
+    return Rest.delete('gestionciclos', [cicloId])
+  }
+
+  /**
    * Realiza el alta de un alumno.
    * @param alumno {} Datos del alumno.
    * @returns {Promise} Devuelve la promesa asociada a la petición.
    */
   altaAlumno (alumno) {
     return Rest.post('gestionalumnos', [], alumno)
+  }
+
+  altaAlumnoMultiple(formData){
+
+    return Rest.post('gestionalumnos', [], formData)
+  }
+  altaActividadMultiple(formData){
+
+    return Rest.post('gestionactividades', [], formData)
+  }
+  /**
+   * Realiza el alta de un modulo.
+   * @param modulo {} Datos del alumno.
+   * @returns {Promise} Devuelve la promesa asociada a la petición.
+   */
+  altaModulo (modulo) {
+    
+    return Rest.post('gestionmodulos', [], modulo)
+  }
+  /**
+   * Realiza el alta de un modulo.
+   * @param modulo {} Datos del alumno.
+   * @returns {Promise} Devuelve la promesa asociada a la petición.
+   */
+  altaCiclo (ciclo) {
+    
+    return Rest.post('gestionciclos', [], ciclo)
   }
    /**
    * Realiza el alta de una actividad.
@@ -275,6 +367,17 @@ export class Modelo {
    */
    modificarActividad (actividad) {
     return Rest.put('gestionactividades', [], actividad)
+  }
+  /**
+   * Modifica una actividad.
+   * @param actividad {} Datos de la actividad.
+   * @returns {Promise} Devuelve la promesa asociada a la petición.
+   */
+   modificarCiclo (ciclo) {
+    return Rest.put('gestionciclos', [], ciclo)
+  }
+   modificarModulo (modulo) {
+    return Rest.put('gestionmodulos', [], modulo)
   }
 /**
    * Peticion que devuelve los datos de los convenios.
@@ -337,6 +440,7 @@ export class Modelo {
   altaProfesor (profesor) {
     return Rest.post('gestionprofesores', [], profesor)
   }
+  
 
   /**
    * Modifica un profesor.

@@ -13,6 +13,7 @@ export class VistaModificarAlumno extends Vista{
     super(controlador)
     this.base = base
     this.alumno
+    this.cursos = []
 
     // Cogemos referencias a los elementos del interfaz
     this.divAltaAlumno = document.getElementById('divAltaAlumno')
@@ -21,6 +22,21 @@ export class VistaModificarAlumno extends Vista{
     this.inputApellidos = document.getElementById('apellidosAlumnoMod')
     this.inputEmail = document.getElementById('emailAlumnoMod')
     this.selectCurso = document.getElementById('selectCicloModAlumno')
+    this.inputDni = document.getElementById('dniAlumnoMod')
+    this.inputNia = document.getElementById('niaAlumnoMod')
+    this.inputSituacionMatricula = document.getElementById('situacionMatriculaAlumnoMod')
+    this.inputTelefono = document.getElementById('telefonoAlumnoMod')
+    this.inputMateriasMatricula = document.getElementById('materiasAlumnoMod')
+    this.inputMateriasPendientes = document.getElementById('materiasPendientesAlumnoMod')
+    this.inputExpedienteCentro = document.getElementById('expedienteAlumnoMod')
+    this.inputRegimen = document.getElementById('regimenAlumnoMod')
+  
+    this.inputAviso = document.getElementById('avisoAlumnoMod')
+
+    this.inputRepetidorSi = document.getElementById('repetidorAlumnoMod')
+    this.inputRepetidorNo = document.getElementById('repetidorAlumnoNoMod')
+    this.inputBilingueSi = document.getElementById('bilingueAlumnoMod')
+    this.inputBilingueNo = document.getElementById('bilingueAlumnoNoMod')
 
     this.botonModificar = document.getElementById('btnAnadirModAlumno')
     this.botonCancelar = document.getElementById('btnCancelarModAlumno')
@@ -42,13 +58,41 @@ export class VistaModificarAlumno extends Vista{
    * Realiza el alta de un alumno.
    */
     modificarAlumno() {
+      let repetidor = ' '
+      if (this.inputRepetidorSi.checked) {
+        repetidor = this.inputRepetidorSi.value;
+        } else if (this.inputRepetidorNo.checked) {
+            repetidor = this.inputRepetidorNo.value;
+        }
+
+        let bilingue = ' '
+      if (this.inputBilingueSi.checked) {
+        bilingue = this.inputBilingueSi.value;
+        } else if (this.inputBilingueNo.checked) {
+            bilingue = this.inputBilingueNo.value;
+        }
+
+
+
       if (this.comprobacion()) {
         const alumno = {
           nombre: this.inputNombre.value.trim(),
           apellidos: this.inputApellidos.value.trim(),
           email: this.inputEmail.value.trim(),
           curso: this.selectCurso.value,
-          id: this.alumno.id
+          nia: this.inputNia.value.trim(),
+          dni: this.inputDni.value.trim(),
+          situacion_matricula: this.inputSituacionMatricula.value.trim(),
+          telefono: this.inputTelefono.value.trim(),
+          aviso: this.inputAviso.value.trim(),
+          materias_matricula: this.inputMateriasMatricula.value,
+          materias_pendientes: this.inputMateriasPendientes.value,
+          expediente: this.inputExpedienteCentro.value.trim(),
+          regimen: this.inputRegimen.value.trim(),
+          bilingue,
+          repetidor,
+          id: this.alumno.id,
+
         }
         this.controlador.modificarAlumno(alumno)
         this.cancelar()
@@ -121,26 +165,70 @@ export class VistaModificarAlumno extends Vista{
    * @param cursos Lista de cursos.
    */
   cargarDatos(alumno, cursos) {
+    this.ocultarErrores()
     this.alumno = alumno
 
     this.inputNombre.value = alumno.nombre.trim();
     this.inputApellidos.value = alumno.apellidos.trim();
     this.inputEmail.value = alumno.email.trim();
+    this.inputDni.value = alumno.dni ? alumno.dni.trim() : '';
+    this.inputNia.value = alumno.nia ? alumno.nia.trim() : '';
+    this.inputSituacionMatricula.value = alumno.situacion_matricula ? alumno.situacion_matricula.trim() : '';
+    this.inputTelefono.value = alumno.telefono ? alumno.telefono.trim() : '';
+    this.inputMateriasMatricula.value = alumno.materias_matricula ? alumno.materias_matricula.trim() : '';
+    this.inputMateriasPendientes.value = alumno.materias_pendientes ? alumno.materias_pendientes.trim() : '';
+    this.inputExpedienteCentro.value = alumno.expediente_centro ? alumno.expediente_centro.trim() : '';
+    this.inputRegimen.value = alumno.tipo_regimen ? alumno.tipo_regimen.trim() : '';
+    this.inputAviso.value = alumno.aviso ? alumno.aviso.trim() : '';
 
-    // Limpiar las opciones existentes del select
-    this.selectCurso.innerHTML = '';
+    // Set radios repetidor (asumiendo que es boolean o 0/1)
+    if (alumno.es_repetidor == 1 || alumno.es_repetidor === true || alumno.es_repetidor === '1') {
+      this.inputRepetidorSi.checked = true;
+      this.inputRepetidorNo.checked = false;
+    } else {
+      this.inputRepetidorSi.checked = false;
+      this.inputRepetidorNo.checked = true;
+    }
 
+    // Set radios bilingue (igual)
+    if (alumno.bilingue == 1 || alumno.bilingue === true || alumno.bilingue === '1') {
+      this.inputBilingueSi.checked = true;
+      this.inputBilingueNo.checked = false;
+    } else {
+      this.inputBilingueSi.checked = false;
+      this.inputBilingueNo.checked = true;
+    }
+
+    this.cursos = []
     // Recorrer los cursos y agregar opciones al select
-    for(let i = 0; i < cursos.length; i++){
-      let option = document.createElement('option');
-      option.value = cursos[i].id;
-      option.textContent = cursos[i].codigo;
-      this.selectCurso.appendChild(option);
+    if (this.cursos.length === 0) {
+       this.selectCurso.innerHTML = '';
+      this.controlador.getCursos()
+        .then(cursos => {
 
-      // Verificar si esta opción coincide con alumno.codigo
-      if (cursos[i].codigo === alumno.codigo.trim()) {
-        option.selected = true;
-      }
+          let option1 = document.createElement('option')
+          this.selectCurso.appendChild(option1)
+          option1.value = ''
+          option1.textContent = 'Seleccione'
+          option1.disabled = 'true'
+
+          for (let i = 0; i < cursos.length; i++) {
+            this.cursos[i] = cursos[i]
+            let option = document.createElement('option')
+            this.selectCurso.appendChild(option)
+            option.value = cursos[i].id
+
+   
+   
+
+            option.textContent = cursos[i].codigo
+
+            if (cursos[i].codigo === alumno.codigo.trim()) {
+              option.selected = true;
+            }
+          }
+        })
+        .catch(error => console.log(error))
     }
   }
 

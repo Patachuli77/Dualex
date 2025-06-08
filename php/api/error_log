@@ -1,0 +1,15 @@
+[07-Jun-2025 16:41:54 UTC] PHP Warning:  Undefined variable $actividad in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:54 UTC] PHP Warning:  Attempt to read property "id" on null in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:54 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php:59) in /home/proyectosevg/public_html/09/php/api/controladores/gestionactividades.php on line 29
+[07-Jun-2025 16:41:56 UTC] PHP Warning:  Undefined variable $actividad in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:56 UTC] PHP Warning:  Attempt to read property "id" on null in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:56 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php:59) in /home/proyectosevg/public_html/09/php/api/controladores/gestionactividades.php on line 29
+[07-Jun-2025 16:41:58 UTC] PHP Warning:  Undefined variable $actividad in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:58 UTC] PHP Warning:  Attempt to read property "id" on null in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:41:58 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php:59) in /home/proyectosevg/public_html/09/php/api/controladores/gestionactividades.php on line 29
+[07-Jun-2025 16:42:01 UTC] PHP Warning:  Undefined variable $actividad in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:42:01 UTC] PHP Warning:  Attempt to read property "id" on null in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:42:01 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php:59) in /home/proyectosevg/public_html/09/php/api/controladores/gestionactividades.php on line 29
+[07-Jun-2025 16:42:03 UTC] PHP Warning:  Undefined variable $actividad in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:42:03 UTC] PHP Warning:  Attempt to read property "id" on null in /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php on line 59
+[07-Jun-2025 16:42:03 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/proyectosevg/public_html/09/php/api/daos/daogestionactividades.php:59) in /home/proyectosevg/public_html/09/php/api/controladores/gestionactividades.php on line 29

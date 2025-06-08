@@ -1,5 +1,7 @@
 {
+    "name": "jorge/api",
     "require": {
-        "google/apiclient": "^2.14"
+        "google/apiclient": "^2.14",
+        "phpoffice/phpspreadsheet": "4.0"
     }
 }

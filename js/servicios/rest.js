@@ -53,21 +53,28 @@ export class Rest {
     @return {Promise} Devuelve una promesa.
   **/
   static post (path, pathParams = [], requestBody = null, json = false) {
-    const opciones = {
-      method: 'POST',
-      headers: Rest._getHeaders(),
-      body: JSON.stringify(requestBody)
-    }
-    // Construimos la petición
-    return fetch(Rest._construirURL(path, pathParams), opciones) // Hacemos la petición
-      .then(respuesta => {
-        // Control de Errores
-        if (!respuesta.ok) { throw Error(`${respuesta.status} - ${respuesta.statusText}`) }
+      const esFormData = requestBody instanceof FormData;
 
-        if (json) return respuesta.json() // Si fuera json.
-        // La respuesta es un texto con la URL del recurso creado.
-        else return respuesta.text()
-      })
+  // Siempre obtenemos el token
+  const headers = esFormData ? {} : Rest._getHeaders();
+
+  // Añadimos Authorization aunque sea FormData
+  if (Rest.#autorizacion) {
+    headers['Authorization2'] = Rest.#autorizacion;
+  }
+
+  const opciones = {
+    method: 'POST',
+    headers: headers,
+    credentials: 'include',
+    body: esFormData ? requestBody : JSON.stringify(requestBody)
+  };
+
+  return fetch(Rest._construirURL(path, pathParams), opciones)
+    .then(respuesta => {
+      if (!respuesta.ok) throw Error(`${respuesta.status} - ${respuesta.statusText}`);
+      return json ? respuesta.json() : respuesta.text();
+    });
   }
 
   /**

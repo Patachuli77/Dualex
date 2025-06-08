@@ -38,6 +38,7 @@ class Alumno{
 		echo $json;
 		die();
 	}
+	
 	/**
 		Procesa un array de alumnos x módulo para unificar los módulos en un array.
 		Espera que en el array los elementos del mismo módulo sean contiguos.

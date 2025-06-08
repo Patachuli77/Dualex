@@ -12,94 +12,78 @@
    constructor (controlador, base) {
      super(controlador)
      this.base = base
-     this.cursos = []
+     
      // Cogemos referencias a los elementos del interfaz
      this.listaModulos = document.getElementById('gestionModulosListado')
-     this.listaModulosSelect = document.getElementById('selectCursoListadoModulos')
+     //this.listaModulosSelect = document.getElementById('selectCicloListadoModulos')
  
      // Asociamos eventos
-     this.listaModulosSelect.addEventListener("change",this.cargarFiltrado.bind(this))
+     
  
      // Ejecutar metodos necesarios
  
    }
- 
-   /**
-   * Carga los cursos en el select de la vista.
-   */
-   cargarFiltroCursos(){
-    if (this.cursos.length === 0) {
-      this.controlador.getCursos()
-        .then(cursos => {
-
-          let option1 = document.createElement('option')
-          this.listaModulosSelect.appendChild(option1)
-          option1.value = ''
-          option1.textContent = 'Seleccione'
-          option1.disabled = 'true'
-
-          for (let i = 0; i < cursos.length; i++) {
-            this.cursos[i] = cursos[i]
-            let option = document.createElement('option')
-            this.listaModulosSelect.appendChild(option)
-            option.value = cursos[i].codigo
-            option.textContent = cursos[i].codigo
-          }
-        })
-        .catch(error => console.log(error))
-    }
-  }
+   
   /**
    * Carga las actividades en el listado filtrados por modulo.
    */
   cargarFiltrado(){
-    this.listaModulos.innerHTML = ''
-    const curso = this.listaModulosSelect.value
-    this.controlador.getModulosByCurso(curso)
-      .then(modulos => {
-        if (modulos.length > 0){
-          for(let i=0; i<modulos.length; i++){
-              this.crearDivModulo(modulos[i])
-          }
-        } else {
-          const div = document.createElement('div')
-          this.listaModulos.appendChild(div)
-          div.textContent = 'No hay ninguna actividad que coincida.'
-        }
-      })
+    this.controlador.verModulos().then(modulos => {
+      
+      this.crearDivModulo(modulos);
+    });
   }
-  crearDivModulo (modulo){
-
-    const div = document.createElement('div')
-    this.listaModulos.appendChild(div)
-
-
-    const spanCodigoModulo= document.createElement('span')
-    div.appendChild(spanCodigoModulo)
-    spanCodigoModulo.classList.add('modulo')
-    spanCodigoModulo.style.color = `${modulo.color_letra} `
-    spanCodigoModulo.style.backgroundColor = `${modulo.color_fondo} `
-    spanCodigoModulo.textContent = `${modulo.codigo} `
-
-    const spanModulo= document.createElement('span')
-    div.appendChild(spanModulo)
-    spanModulo.classList.add('modulo')
-    spanModulo.textContent = `${modulo.titulo} `
-    //spanActividad.addEventListener("click", () => this.modificarActividad(actividad))
-
-    
-
-    /*const spanIconos = document.createElement('span')
-    div.appendChild(spanIconos)
-    spanIconos.classList.add('iconos')
-
-    const spanIconoBorrar = document.createElement('img')
-    spanIconos.appendChild(spanIconoBorrar)
-    spanIconoBorrar.classList.add('icono')
-    spanIconoBorrar.src = 'iconos/delete.svg'
-    spanIconoBorrar.addEventListener("click", () => this.borrarActividad(actividad.id, actividad.titulo))
-*/
+  crearDivModulo (modulos){
+console.log(modulos)
+    // Inicializar la tabla si aún no lo está
+    if (!$.fn.DataTable.isDataTable('#tablaModulos')) {
+      $('#tablaModulos').DataTable();
+    }
+  
+    const tabla = $('#tablaModulos').DataTable();
+    tabla.clear(); // Limpiar datos existentes
+  
+    modulos.forEach(modulo => {
+      const estiloTitulo = modulo.activo === 0 ? 'color:red;' : '';
+      tabla.row.add([
+        `<span class="modulo" data-id="${modulo.id}" style="cursor:pointer; ${estiloTitulo}">${modulo.titulo}</span>`,
+        `<span class = codigo style= "color : ${modulo.color_letra}; background-color : ${modulo.color_fondo}; ">${modulo.codigo}</span>`,
+        `<span>${modulo.siglas_ciclo}</span>`,
+        `<span class="iconos">
+           <img class="icono borrar" data-id="${modulo.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">
+         </span>`
+      ]);
+    });
+  
+    tabla.draw();
+  
+    // Evento para modificar modulo
+    $('#tablaModulos').off('click', 'span.modulo').on('click', 'span.modulo', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const modulo = modulos.find(a => a.id === id);
+      if (modulo) {
+        this.modificarModulo(modulo);
+      }
+    });
+  
+    // Evento para borrar modulo
+    $('#tablaModulos').off('click', 'img.icono').on('click', 'img.icono', (e) => {
+      const id = $(e.currentTarget).data('id');
+      const modulo = modulos.find(a => a.id === id);
+      if (modulo) {
+        this.controlador.desactivarModulo(modulo.id, modulo.titulo);
+      }
+    })
   }
+
+  /**
+   * Redirige a la vista para modificar el modulo.
+   * @param modulo {} Datos modificables del alumno.
+   */
+  modificarModulo (modulo) {
+    this.controlador.mostrarModificarModulo(modulo)
+  }
+
 
 
 

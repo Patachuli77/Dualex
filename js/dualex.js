@@ -35,18 +35,28 @@ import { VistaMenuCoordinador } from './vistas/vistamenucoordinador.js'
 import { VistaAltaAlumno } from './vistas/vistaaltaalumno.js'
 //Vista alta actividad
 import { VistaAltaActividad } from './vistas/vistaaltaactividad.js'
+//vista alta modulo
+import { VistaAltaModulo } from './vistas/vistaaltamodulo.js'
+//vista alta ciclo
+import { VistaAltaCiclo } from './vistas/vistaaltaciclo.js'
+//Vista modificar modulo
+import { VistaModificarModulo } from './vistas/vistamodificarmodulo.js'
 // Vista de modificación de alumno
 import { VistaModificarAlumno } from './vistas/vistamodificaralumno.js'
 // Vista de Gestión de alumnos
 import { VistaGestionAlumnos } from './vistas/vistagestionalumnos.js'
 // Vista de Gestión de modulos
 import { VistaGestionModulos } from './vistas/vistagestionmodulos.js'
+//Vista de Gestion de ciclos
+import{VistaGestionCiclos} from './vistas/vistagestionciclos.js'
 // Vista de Gestión de profesores
 import { VistaGestionProfesores } from './vistas/vistagestionprofesores.js'
 // Vista de alta de profesor
 import { VistaAltaProfesor } from './vistas/vistaaltaprofesor.js'
 // Vista de modificación de profesor
 import { VistaModificarProfesor } from './vistas/vistamodificarprofesor.js'
+//Vista de modificacion de ciclos
+import { VistaModificarCiclo } from './vistas/vistamodificarciclo.js'
 //Vista Actividades ///////////////
 import { VistaGestionActividades } from './vistas/vistagestionactividades.js'
 //Vista de modificacion de una actividad
@@ -92,15 +102,20 @@ class DualEx {
     this.vistaConvenio = new Vistaconvenio(this, document.getElementById('divConvenio')) // Vista alta convenios
     this.vistaConvenios = new VistaConvenios(this, document.getElementById('divConvenios')) // Vista listado convenios
     this.vistaAlumnoAlta = new VistaAltaAlumno(this, document.getElementById('divAltaAlumno'))
+    this.vistaModuloAlta = new VistaAltaModulo(this, document.getElementById('divAltaModulo'))
+    this.vistaModificarModulo = new VistaModificarModulo(this, document.getElementById('divModificarModulo'))
     this.vistaActividadAlta = new VistaAltaActividad(this, document.getElementById('divAltaActividad'))
     this.vistaActividadListado = new VistaGestionActividades(this, document.getElementById('divGestionActividades')) //Vista alta actividades
     this.vistaModulosListado = new VistaGestionModulos(this, document.getElementById('divGestionModulos'))
     this.vistaAlumnosListado = new VistaGestionAlumnos(this, document.getElementById('divGestionAlumnos'))
     this.vistaModificarAlumno = new VistaModificarAlumno(this, document.getElementById('divModificarAlumno'))
     this.vistaProfesoresListado = new VistaGestionProfesores(this, document.getElementById('divGestionProfesores'))
+    this.vistaCiclosListado = new VistaGestionCiclos(this, document.getElementById('divGestionCiclos'))
     this.vistaModificarActividad = new VistaModificarActividad(this, document.getElementById('divModificarActividad'))
     this.vistaProfesorAlta = new VistaAltaProfesor(this, document.getElementById('divAltaProfesor'))
     this.vistaModificarProfesor = new VistaModificarProfesor(this, document.getElementById('divModificarProfesor'))
+    this.vistaModificarCiclo = new VistaModificarCiclo(this, document.getElementById('divModificarCiclo'))
+    this.vistaCicloAlta = new VistaAltaCiclo(this, document.getElementById('divAltaCiclo'))
     this.vistaLogin.mostrar()
   }
 
@@ -186,6 +201,11 @@ class DualEx {
     this.vistaActividadAlta.mostrar(false)
     this.vistaModificarActividad.mostrar(false)
     this.vistaModulosListado.mostrar(false)
+    this.vistaModuloAlta.mostrar(false)
+    this.vistaModificarModulo.mostrar(false)
+    this.vistaCiclosListado.mostrar(false)
+    this.vistaCicloAlta.mostrar(false)
+    this.vistaModificarCiclo.mostrar(false)
   }
 
 
@@ -286,19 +306,34 @@ class DualEx {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verGestionModulos()
-    this.vistaModulosListado.cargarFiltroCursos()
+    this.vistaModulosListado.cargarFiltrado()
     //this.vistaAlumnoAlta.limpiarCampos()
     this.ocultarVistas()
     this.vistaModulosListado.mostrar(true)
   }
-/**
+
+   /**
+   * Muestra la vista de gestion de ciclos
+   * 
+   */
+
+  mostrarGestionCiclos () {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.vistaMenu.verGestionCiclos()
+    this.vistaCiclosListado.cargarFiltrado()
+    this.vistaCicloAlta.limpiarCampos()
+    this.ocultarVistas()
+    this.vistaCiclosListado.mostrar(true)
+  }
+  /**
    * Muestra la vista de gestion de alumnos.
    */
   mostrarGestionAlumnos () {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verGestionAlumnos()
-    this.vistaAlumnosListado.cargarFiltroCursos()
+    this.vistaAlumnosListado.cargarFiltrado()
     this.vistaAlumnoAlta.limpiarCampos()
     this.ocultarVistas()
     this.vistaAlumnosListado.mostrar(true)
@@ -311,7 +346,7 @@ class DualEx {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verAltaAlumno()
-    this.vistaAlumnoAlta.cargarDatos(this.vistaAlumnosListado.cursos)
+    this.vistaAlumnoAlta.cargarDatos()
     this.ocultarVistas()
     new Promise((resolve) => {
       this.vistaAlumnoAlta.mostrar(true);
@@ -322,6 +357,44 @@ class DualEx {
       console.error('Error mostrando vista de alta de alumno:', error);
     });
   }
+
+  /**
+   * Muestra la vista de alta de alumno.
+   */
+  mostrarAltaCiclo () {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.vistaMenu.verAltaCiclo()
+    this.vistaCicloAlta.cargarDatos()
+    this.ocultarVistas()
+    new Promise((resolve) => {
+      this.vistaCicloAlta.mostrar(true);
+      resolve();
+    }).then(() => {
+      this.vistaCicloAlta.inputNombre.focus();
+    }).catch((error) => {
+      console.error('Error mostrando vista de alta de ciclo:', error);
+    });
+  }
+  /**
+   * Muestra la vista de alta de modulos.
+   */
+  mostrarAltaModulo () {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.vistaMenu.verAltaModulo()
+    this.vistaModuloAlta.limpiarCampos()
+    this.vistaModuloAlta.cargarDatos(this.vistaModulosListado.ciclos)
+    this.ocultarVistas()
+    new Promise((resolve) => {
+      this.vistaModuloAlta.mostrar(true);
+      resolve();
+    }).then(() => {
+      this.vistaModuloAlta.inputTitulo.focus();
+    }).catch((error) => {
+      console.error('Error mostrando vista de alta de modulo:', error);
+    });
+  }
   /**
    * Muestra la vista de alta de actividad.
    */
@@ -329,7 +402,7 @@ class DualEx {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verAltaActividad()
-    this.vistaActividadAlta.cargarDatos(this.vistaActividadListado.modulos)
+    this.vistaActividadAlta.cargarDatos()
     this.ocultarVistas()
     new Promise((resolve) => {
       this.vistaActividadAlta.mostrar(true);
@@ -350,7 +423,7 @@ class DualEx {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verModificarAlumno()
-    this.vistaModificarAlumno.cargarDatos(alumno, cursos)
+    this.vistaModificarAlumno.cargarDatos(alumno)
 
     this.ocultarVistas()
     new Promise((resolve) => {
@@ -370,7 +443,7 @@ class DualEx {
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.vistaMenu.verModificarActividad()
-    this.vistaModificarActividad.cargarDatos(actividad, modulos)
+    this.vistaModificarActividad.cargarDatos(actividad)
 
     this.ocultarVistas()
     new Promise((resolve) => {
@@ -382,6 +455,83 @@ class DualEx {
       console.error('Error mostrando vista de modificación de Actividad:', error);
     });
   }
+  /**
+   * Muestra la vista de modificación de la actividad.
+   * @param ciclo {} Datos del ciclo a modificar.
+   */
+
+  mostrarModificarCiclo (ciclo) {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.vistaMenu.verModificarCiclo()
+    this.vistaModificarCiclo.cargarDatos(ciclo)
+
+    this.ocultarVistas()
+    new Promise((resolve) => {
+      this.vistaModificarCiclo.mostrar(true);
+      resolve();
+    }).then(() => {
+      this.vistaModificarCiclo.inputNombre.focus();
+    }).catch((error) => {
+      console.error('Error mostrando vista de modificación de Actividad:', error);
+    });
+  }
+ /**
+   * Muestra la vista de modificación de modulo.
+   * @param modulo {} Datos del modulo a modificar.
+   */
+ mostrarModificarModulo (modulo) {
+  if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+  this.vistaMenu.verModificarModulo()
+
+  this.vistaModificarModulo.cargarDatos(modulo)
+
+  this.ocultarVistas()
+  new Promise((resolve) => {
+    this.vistaModificarModulo.mostrar(true);
+    resolve();
+  }).then(() => {
+    //this.vistaModificarModulo.inputTitulo.focus();
+  }).catch((error) => {
+    console.error('Error mostrando vista de modificación de Modulo:', error);
+  });
+}
+
+
+ /**
+   * Realiza una petición para insertar un nuevo modulo.
+   * @param modulo {} Datos del modulo a insertar.
+   */
+ altaModulo (modulo) {
+  if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+  this.modelo.altaModulo(modulo)
+    .then(resultado => {
+      this.vistaMensaje.mostrar('El modulo se creó correctamente', VistaMensaje.OK)
+      this.vistaModuloAlta.limpiarCampos()
+      this.vistaModulosListado.cargarFiltrado()
+    })
+    .catch(error => this.gestionarError(error))
+}
+
+ /**
+   * Realiza una petición para insertar un nuevo ciclo.
+   * @param ciclo {} Datos del ciclo a insertar.
+   */
+ altaCiclo (ciclo) {
+  if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+  this.modelo.altaCiclo(ciclo)
+    .then(resultado => {
+      this.vistaMensaje.mostrar('El modulo se creó correctamente', VistaMensaje.OK)
+      this.vistaCicloAlta.limpiarCampos()
+      this.vistaCiclosListado.cargarFiltrado()
+    })
+    .catch(error => this.gestionarError(error))
+}
+
+
 
   /**
    * Realiza una petición para insertar un nuevo alumno.
@@ -428,12 +578,41 @@ class DualEx {
       })
       .catch(error => this.gestionarError(error))
   }
+
+  /**
+   * Realiza una petición para modificar un modulo.
+   * @param modulo {} Datos del modulo a modificar.
+   */
+  modificarModulo (modulo) {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.modelo.modificarModulo(modulo)
+      .then(resultado => {
+        this.vistaMensaje.mostrar('El modulo se actualizó correctamente', VistaMensaje.OK)
+        this.vistaModulosListado.cargarFiltrado()
+      })
+      .catch(error => this.gestionarError(error))
+  }
+  /**
+   * Realiza una petición para modificar un ciclo.
+   * @param ciclo {} Datos del ciclo a modificar.
+   */
+  modificarCiclo (ciclo) {
+    if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+
+    this.modelo.modificarCiclo(ciclo)
+      .then(resultado => {
+        this.vistaMensaje.mostrar('El ciclo se actualizó correctamente', VistaMensaje.OK)
+        this.vistaCiclosListado.cargarFiltrado()
+      })
+      .catch(error => this.gestionarError(error))
+  }
   /**
    * Realiza una petición para modificar una actividad.
    * @param actividad {} Datos de la actividad a modificar.
    */
   modificarActividad(actividad) {
-    console.log(actividad)
+   
     if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.modelo.modificarActividad(actividad)
@@ -452,7 +631,7 @@ class DualEx {
       if (this.#usuario.rol !== 'profesor' && this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
       this.vistaMenu.verGestionActividades()
-      this.vistaActividadListado.cargarFiltroModulos()
+      this.vistaActividadListado.cargarFiltrado()//Modificacion
       this.vistaActividadAlta.limpiarCampos()
       this.ocultarVistas()
       this.vistaActividadListado.mostrar(true)
@@ -461,7 +640,8 @@ class DualEx {
 
   
    /**
-   * Develve la lista de alumnos de un curso
+   * Develve la lista de actividades de un modulo
+   * @param modulo id del modulo por el que se busca
    * @returns array
    */
    getActividadesByModulo(modulo){
@@ -469,12 +649,28 @@ class DualEx {
   }
 
   /**
+   * Develve la lista de actividades
+   * @returns array
+   */
+  getActividades(){
+    return this.modelo.getActividades()
+  }
+
+  /**
+   * Develve la lista de ciclos
+   * @returns array
+   */
+  getCiclos(){
+    return this.modelo.getCiclos()
+  }
+
+  /**
     Devuelve la lista de actividades definidas.
     @param idCurso {Number} Identificador del curso.
     @return {Promise} Promesa de resolución de la petición.
   **/
-  verActividades (idCurso) {
-    return this.modelo.getActividades(idCurso)
+  verActividadesCurso (idCurso) {
+    return this.modelo.getActividadesCurso(idCurso)
   }
 
   /**
@@ -531,7 +727,11 @@ class DualEx {
         this.modelo.borrarTarea(tarea)
           .then(respuesta => {
             this.vistaMensaje.mostrar('La tarea se eliminó correctamente.', VistaMensaje.OK)
-            this.mostrarTareasAlumno(this.#usuario)
+             if (this.#usuario.rol === 'profesor' || this.#usuario.rol === 'coordinador')
+            this.mostrarTareasAlumno(this.alumnoMostrado) 
+            else 
+              this.mostrarTareasAlumno(this.#usuario) 
+        
           })
           .catch(error => this.gestionarError(error))
       } else { this.vistaDialogo.cerrar() }
@@ -725,6 +925,18 @@ class DualEx {
     this.vistaEmpresa.mostrar(true);
   }
 
+   /**
+   * Muestra la vista para crear una nueva empresa.
+   */
+  mostrarEditarEmpresa() {
+    this.ocultarVistas();
+    this.vistaMenu.editarEmpresa();
+    this.vistaEditarEmpresa.mostrar(true);
+  }
+  /**
+   * Muestra la vista para crear un convenio.
+   */
+
   mostrarVistaConvenio(){
     this.ocultarVistas()
     this.vistaMenu.crearConvenio()
@@ -770,14 +982,31 @@ class DualEx {
   recibirDatosConvenios () {
     return Rest.get('convenio')
   }
-  
   /**
-   * Develve la lista de alumnos de un curso
+   * Develve la lista de alumnos
    * @returns array
    */
-  getAlumnosByCurso(curso){
-    return this.modelo.getAlumnosByCurso(curso)
+  getAlumnos(){
+    return this.modelo.getAlumnos()
   }
+  /**
+   * Develve la lista de modulos de ciclo
+   *  @param ciclo id del ciclo
+   * @returns array
+   */
+    getModulosByCiclo(ciclo){
+      return this.modelo.getModulosByCiclo(ciclo)
+    }
+
+    /**
+   * Develve la lista de profesores de un modulo
+   * @param modulo id del modulo
+   * @returns array
+   */
+    getProfesoresByModulo(modulo){
+      return this.modelo.getProfesoresByModulo(modulo)
+    }
+
 
   /**
    * Develve la lista de modulos de un curso
@@ -786,6 +1015,109 @@ class DualEx {
   getModulosByCurso(curso){
     return this.modelo.getModulosByCurso(curso)
   }
+  /**
+   * Develve la lista de cursos de un ciclo
+   * @returns array
+   */
+
+  getCursosByCiclo(ciclo){
+    return this.modelo.getCursosByCiclo(ciclo)
+  }
+   /**
+   * Enseña un mensaje para hacer el alta multiple de alumnos
+   * @returns array
+   */
+  altaAlumnoMultiple(){
+  const titulo = `¿AÑADIR MULTIPLES ALUMNOS?`
+    const mensaje = "Usa la plantilla en el formato .xlsx"
+    const contenedor = document.getElementById('altaMultiple');
+    const inputArchivo = document.getElementById('multiple');
+    contenedor.style.display = 'flex'; 
+
+     this.vistaDialogo.abrir(titulo, mensaje, confirmar => {
+        contenedor.style.display = 'none';
+      if (confirmar) {
+         
+        const validado = this.vistaAlumnoAlta.validarDocumento()
+        if (validado){
+          const archivo = this.vistaAlumnoAlta.archivo.files[0]
+          const formData = new FormData()
+          formData.append('archivo', archivo)
+           this.modelo.altaAlumnoMultiple(formData)
+           
+            .then(respuesta => {
+              this.vistaMensaje.mostrar('Alumnos añadidos correctamente.', VistaMensaje.OK)
+              this.vistaAlumnosListado.cargarFiltrado()
+               inputArchivo.value = ''
+            })
+            .catch(error => {
+              this.gestionarError(error)
+            inputArchivo.value = ''; 
+
+          })
+        }else{
+          
+        this.vistaDialogo.cerrar() 
+         inputArchivo.value = ''
+
+        } 
+      } else { 
+        console.log("cancelado")
+         inputArchivo.value = ''
+      
+        this.vistaDialogo.cerrar() 
+      }
+    }, true)
+
+  }
+   /**
+   * Enseña un mensaje para hacer el alta multiple de actividades
+   * @returns array
+   */
+
+   altaActividadMultiple(){
+  const titulo = `¿AÑADIR MULTIPLES ACTIVIDADES?`
+    const mensaje = "Usa la plantilla en el formato .xlsx"
+    const contenedor = document.getElementById('altaMultiple');
+    const inputArchivo = document.getElementById('multiple');
+    contenedor.style.display = 'flex'; // o 'block', según tu CSS
+
+     this.vistaDialogo.abrir(titulo, mensaje, confirmar => {
+        contenedor.style.display = 'none';
+      if (confirmar) {
+        const validado = this.vistaActividadAlta.validarDocumento()
+        if (validado){
+          const archivo = this.vistaActividadAlta.archivo.files[0]
+          const formData = new FormData()
+          formData.append('archivo', archivo)
+           this.modelo.altaActividadMultiple(formData)
+           
+            .then(respuesta => {
+              this.vistaMensaje.mostrar('Actividades añadidas correctamente.', VistaMensaje.OK)
+              this.vistaAlumnosListado.cargarFiltrado()
+              inputArchivo.value = '';
+            })
+            .catch(error => {
+            this.gestionarError(error)
+            inputArchivo.value = '';  // <-- también limpia si hay error
+          })
+      } else {
+          console.log("meh")
+        
+        inputArchivo.value = '';
+        this.vistaDialogo.cerrar() 
+
+        } 
+      } else { 
+        console.log("cancelado")
+        
+      inputArchivo.value = '';
+        this.vistaDialogo.cerrar() 
+      }
+    }, true)
+
+  }
+ 
   
   eliminarAlumno (alumnoId, alumnoNombre) {
     const titulo = `¿Realmente quiere ELIMINAR al alumno  "${alumnoNombre}"?`
@@ -801,6 +1133,7 @@ class DualEx {
       } else { this.vistaDialogo.cerrar() }
     })
   }
+
   eliminarActividad (actividadId, actividadTitulo) {
     const titulo = `¿Realmente quiere ELIMINAR la actividad  "${actividadTitulo}"?`
     const mensaje = 'Esta operación no puede deshacerse.'
@@ -810,6 +1143,20 @@ class DualEx {
           .then(respuesta => {
             this.vistaMensaje.mostrar('La actividad se eliminó correctamente.', VistaMensaje.OK)
             this.vistaActividadListado.cargarFiltrado()
+          })
+          .catch(error => this.gestionarError(error))
+      } else { this.vistaDialogo.cerrar() }
+    })
+  }
+   eliminarCiclo (cicloId, cicloNombre) {
+    const titulo = `¿Realmente quiere ELIMINAR el ciclo  "${cicloNombre}"?`
+    const mensaje = 'Esta operación no puede deshacerse.'
+    this.vistaDialogo.abrir(titulo, mensaje, confirmar => {
+      if (confirmar) {
+        this.modelo.borrarCiclo(cicloId)
+          .then(respuesta => {
+            this.vistaMensaje.mostrar('El ciclo se eliminó correctamente.', VistaMensaje.OK)
+            this.vistaCiclosListado.cargarFiltrado()
           })
           .catch(error => this.gestionarError(error))
       } else { this.vistaDialogo.cerrar() }
@@ -876,7 +1223,6 @@ class DualEx {
 
     this.vistaMenu.verGestionProfesores()
     this.vistaProfesorAlta.limpiarCampos()
-    this.vistaProfesoresListado.limpiar()
     this.vistaProfesoresListado.cargarFiltrado()
     this.ocultarVistas()
     this.vistaProfesoresListado.mostrar(true)
@@ -917,6 +1263,7 @@ class DualEx {
       .then(resultado => {
         this.vistaMensaje.mostrar('El profesor se creó correctamente', VistaMensaje.OK)
         this.vistaProfesorAlta.limpiarCampos()
+        this.ocultarVistas()
         this.mostrarGestionProfesores()
       })
       .catch(error => this.gestionarError(error))
@@ -932,6 +1279,7 @@ class DualEx {
     this.modelo.modificarProfesor(profesor)
       .then(resultado => {
         this.vistaMensaje.mostrar('El profesor se actualizó correctamente', VistaMensaje.OK)
+        this.ocultarVistas()
         this.mostrarGestionProfesores()
       })
       .catch(error => this.gestionarError(error))
@@ -943,6 +1291,35 @@ class DualEx {
    */
   getProfesores(){
     return this.modelo.getProfesores()
+  }
+
+  /**
+   * Develve la lista de modulos
+   */
+  verModulos(){
+
+    return this.modelo.verModulos()
+  }
+  /**
+   * Desactiva un modulo.
+   * @param moduloId - {Number} ID del profesor que se quiere borrar.
+   * @param modulonombre - {String} Nombre del profesor que se quiere borrar.
+   */
+  
+  desactivarModulo(moduloId, modulonombre){
+    if (this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
+    const titulo = `¿Realmente quiere DESACTIVAR al modulo "${modulonombre}"?`
+    const mensaje = 'Esta operación no puede deshacerse.'
+    this.vistaDialogo.abrir(titulo, mensaje, confirmar => {
+      if (confirmar) {
+        this.modelo.desactivarModulo(moduloId)
+          .then(respuesta => {
+            this.vistaMensaje.mostrar('El modulo se desactivo correctamente.', VistaMensaje.OK)
+            this.vistaModulosListado.cargarFiltrado()
+          })
+          .catch(error => this.gestionarError(error))
+      } else { this.vistaDialogo.cerrar() }
+    })
   }
 
   /**
@@ -965,11 +1342,11 @@ class DualEx {
       } else { this.vistaDialogo.cerrar() }
     })
   }
-
-  /**
+/*
+  /*
    * Realiza una petición para insertar un nuevo profesor.
    * @param profesor {} Datos del profesor a insertar.
-   */
+   *
   altaProfesor (profesor) {
     if (this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
@@ -978,6 +1355,8 @@ class DualEx {
         this.vistaMensaje.mostrar('El profesor se creó correctamente', VistaMensaje.OK)
         this.vistaProfesorAlta.limpiarCampos()
         this.vistaProfesoresListado.cargarFiltrado()
+        this.ocultarVistas()
+        this.mostrarGestionProfesores()
       })
       .catch(error => this.gestionarError(error))
   }
@@ -985,17 +1364,18 @@ class DualEx {
   /**
    * Realiza una petición para modificar un profesor.
    * @param profesor {} Datos del profesor a modificar.
-   */
+   *
   modificarProfesor (profesor) {
     if (this.#usuario.rol !== 'coordinador') { throw Error('Operación no permitida.') }
 
     this.modelo.modificarProfesor(profesor)
       .then(resultado => {
         this.vistaMensaje.mostrar('El profesor se actualizó correctamente', VistaMensaje.OK)
+         this.ocultarVistas()
         this.vistaProfesoresListado.cargarFiltrado()
       })
       .catch(error => this.gestionarError(error))
-  }
+  }*/
 }
 
 /* eslint-disable no-new */

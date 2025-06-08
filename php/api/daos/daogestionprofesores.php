@@ -14,6 +14,17 @@ class daogestionprofesores{
         $params = array();
         return BD::seleccionar($sql, $params);
     }
+    public static function verProfesoresByModulo($modulo){
+        $sql = "SELECT p.id, u.nombre, u.apellidos, u.email ";
+        $sql .= "FROM Profesor p ";
+        $sql .= "JOIN Modulo_Profesor pm ON p.id = pm.id_profesor ";
+        $sql .= "JOIN Modulo m ON m.id = pm.id_modulo ";
+        $sql .= "JOIN Usuario u ON u.id = p.id ";
+        $sql .= "WHERE m.id = :id_modulo ";
+
+        $params = array(':id_modulo' => $modulo->id);
+        return BD::seleccionar($sql, $params);
+    }
 
     public static function eliminarProfesor($id){
         $sql = "DELETE FROM Usuario ";

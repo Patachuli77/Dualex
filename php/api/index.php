@@ -115,11 +115,16 @@
 				require_once ('./controladores/gestionmodulos.php');
 				$controlador = new GestionModulos();
 				break;	
-				case 'gestionactividades':
+			case 'gestionciclos':
+				require_once ('./controladores/gestionciclos.php');
+				$controlador = new GestionCiclos();
+				break;	
+
+			case 'gestionactividades':
 					require_once ('./controladores/gestionactividades.php');
 					$controlador = new GestionActividades();
 					break;
-				case 'gestionprofesores':
+			case 'gestionprofesores':
                 require_once('./controladores/gestionprofesores.php');
                 $controlador = new gestionprofesores();
                 break;

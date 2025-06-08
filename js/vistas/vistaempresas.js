@@ -19,21 +19,67 @@ export class VistaEmpresas extends Vista {
    * Método cargarEmpresas: Carga y muestra la lista de empresas en la interfaz de usuario.
    */
   cargarEmpresas() {
+
+
+
+    // Inicializar la tabla si aún no lo está
+    if (!$.fn.DataTable.isDataTable('#tablaEmpresa')) {
+      $('#tablaEmpresa').DataTable();
+    }
+    const tabla = $('#tablaEmpresa').DataTable();
+    tabla.clear(); // Limpiar datos existentes
+
     // Eliminar cualquier contenido previo en la base
-    this.eliminarHijos(this.base);
+   // this.eliminarHijos(this.base);
 
     // Llamar a la función del controlador para mostrar las empresas
     this.controlador.mostrarEmpresas()
       .then(empresas => {
         // Si no hay empresas, mostramos un mensaje
-        if (!empresas || empresas.length === 0) {
-          this.base.appendChild(document.createTextNode('No hay empresas.'));
-          return;
+      
+
+        empresas.forEach(empresa => {
+        tabla.row.add([
+          `<span class="empresa" data-id="${empresa.id}" style="cursor:pointer">${empresa.siglas}</span>`,
+          `<span>${empresa.nombre}</span>`,
+          `<span class="iconos">
+            <img class="icono borrar" data-id="${empresa.id}" src="iconos/delete.svg" style="cursor:pointer" title="Eliminar">
+          </span>`
+        ]);
+      });
+
+      tabla.draw();
+
+      // Evento para modificar ciclo
+      $('#tablaEmpresa').off('click', 'span.empresa').on('click', 'span.empresa', (e) => {
+        const id = $(e.currentTarget).data('id');
+        const empresa = empresas.find(a => a.id === id);
+        if (empresa) {
+          this.handleClickEditar(empresa.id);
         }
+      });
+    
+      // Evento para borrar ciclo
+      $('#tablaEmpresa').off('click', 'img.icono').on('click', 'img.icono', (e) => {
+        const id = $(e.currentTarget).data('id');
+        const empresa = empresas.find(a => a.id === id);
+        if (empresa) {
+          this.handleClickBorrar(empresa.id, empresa.nombre);
+        }
+      });
+    });
+
+    
+
+      
+    
+      
+  
+
 
         
 
-        // Agregar cada empresa como un elemento de div
+        /*// Agregar cada empresa como un elemento de div
         empresas.forEach(empresa => {
           const itemEmpresa = document.createElement('div');
           itemEmpresa.classList.add('empresa-item');
@@ -49,7 +95,7 @@ export class VistaEmpresas extends Vista {
           idStrong.textContent = 'ID: ';
           idSpan.appendChild(idStrong);
           idSpan.appendChild(document.createTextNode(empresa.id));
-          empresaInfo.appendChild(idSpan);*/
+          empresaInfo.appendChild(idSpan);/
         
           const siglasSpan = document.createElement('span');
           //const siglasStrong = document.createElement('strong');
@@ -105,7 +151,7 @@ export class VistaEmpresas extends Vista {
         // Manejar errores en caso de que la promesa sea rechazada
         console.error('Error al cargar empresas:', error);
         this.base.appendChild(document.createTextNode('Error al cargar empresas.'));
-      });
+      });*/
   }
 
   /**
@@ -114,12 +160,12 @@ export class VistaEmpresas extends Vista {
    */
   handleClickEditar(id) {
     // Lógica para editar la empresa asociada a este botón
-    this.controlador.ocultarVistas();
     this.controlador.mostrarDatosEmpresa(id).then(empresa => {
       // Mostrar los datos de la empresa en el formulario de edición
       this.controlador.vistaEditarEmpresa.mostrarEmpresaEnFormulario(empresa);
       // Mostrar la vista de edición de empresa
-      this.controlador.vistaEditarEmpresa.mostrar(true);
+      this.controlador.mostrarEditarEmpresa()
+     
     })
     .catch(error => {
       console.error('Error al obtener datos de empresa:', error);
@@ -130,10 +176,10 @@ export class VistaEmpresas extends Vista {
    * Método handleClickBorrar: Maneja el evento de clic en el botón de borrar una empresa.
    * @param {string} id - ID de la empresa a borrar.
    */
-  handleClickBorrar(id) {
+  handleClickBorrar(id, nombre) {
     // Mostrar un cuadro de confirmación
     const titulo = 'Confirmar borrado';
-    const mensaje = '¿Realmente desea borrar esta empresa?';              
+    const mensaje = `¿Realmente desea borrar la empresa "${nombre}"?`;              
     // Si el usuario confirma, proceder con las acciones de borrado
     this.controlador.vistaDialogo.abrir(titulo, mensaje, (confirmacion) => {
       if (confirmacion) {

@@ -43,6 +43,7 @@ export class VistaTareas extends Vista {
     const tr1 = document.createElement('tr')
     tbody.appendChild(tr1)
 
+
     // Primer TD con los módulos
     const tdModulos = document.createElement('td')
     tdModulos.setAttribute('rowspan', '2')
@@ -64,6 +65,7 @@ export class VistaTareas extends Vista {
 
     // Tercer TD con el icono de eliminar
     let revisiones = tarea.modulos.reduce((accumulator, modulo) => accumulator + modulo.revisado, 0)
+    console.log(tarea.modulos)
     let editable = true
 
     if (this.controlador.getUsuario().rol === 'alumno') {
@@ -158,6 +160,18 @@ export class VistaTareas extends Vista {
     span.setAttribute('title', modulo.titulo)
     span.style.backgroundColor = modulo.color_fondo
     span.style.color = modulo.color_letra
+
+      if (modulo.revisado !== 0) {
+      // Si el módulo ha sido revisado, lo mostramos en gris y tachado
+      span.style.backgroundColor = '#e0e0e0'  // gris claro
+      span.style.color = '#888'               // texto gris
+      span.style.textDecoration = 'line-through'
+      span.setAttribute('title', modulo.titulo + ' (revisado)')
+    } else {
+      // Estilos normales si no está revisado
+      span.style.backgroundColor = modulo.color_fondo
+      span.style.color = modulo.color_letra
+    }
   }
 
   /**

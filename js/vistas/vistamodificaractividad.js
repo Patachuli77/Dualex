@@ -13,12 +13,15 @@
      super(controlador)
      this.base = base
      this.actividad
- 
+     this.ciclos = []
+     this.modulos = []
+
      // Cogemos referencias a los elementos del interfaz
      this.inputTitulo = document.getElementById('tituloActividadMod')
      this.inputDescripcion = document.getElementById('descripcionActividadMod')
      this.selectModulo = document.getElementById('selectModuloActividadMod')
- 
+     this.selectCiclo = document.getElementById('selectCicloActividadMod')
+
      this.botonModificar = document.getElementById('btnAnadirModActividad')
      this.botonCancelar = document.getElementById('btnCancelarModActividad')
  
@@ -28,11 +31,39 @@
      // Asociamos eventos
      this.botonModificar.addEventListener("click", this.modificarActividad.bind(this))
      this.botonCancelar.addEventListener("click", this.cancelar.bind(this))
+     this.selectCiclo.addEventListener("change",this.mostrarModulosCiclo.bind(this))
  
      // Ejecutar metodos necesarios
  
    }
- 
+  /**
+    * Muestra los modulos relacionados al ciclo seleccionado
+    */
+
+  mostrarModulosCiclo() {
+    const ciclo = this.selectCiclo.value
+    
+   this.controlador.getModulosByCiclo(ciclo)
+    .then(modulos => {
+      const checkboxes = this.selectModulo.querySelectorAll('input[data-idModulo]');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.parentElement.style.display = 'none'; 
+      })
+      for (let i = 0; i < modulos.length; i++) {
+        const modulo = modulos[i];
+        const checkbox = Array.from(checkboxes).find(cb => cb.getAttribute('data-idModulo') === modulo.id.toString());
+        
+        
+         if (checkbox) {
+          checkbox.parentElement.style.display = 'block';
+        }
+      }
+        
+      })
+    
+    }
+   
    /**
     * Realiza el la modificacion de un actividad
     */
@@ -113,37 +144,66 @@
       }
  
    /**
-    * Carga los datos de los cursos en el select.
+    * Carga los datos de los ciclos en el select.
     * @param modulos Lista de modulos.
     */
-   cargarDatos(actividad, modulos) {
-    this.actividad = actividad
-    console.log(actividad)
-    console.log(modulos)
-    this.inputTitulo.value = actividad.titulo.trim();
-    this.inputDescripcion.value = (actividad.descripcion ?? "").trim();
-    //separar los modulos de la actividad en un array
-    const modulosActividad = actividad.modulos ? actividad.modulos.split(", ").map(m => m.trim()) : [];
-
-     // Limpiar las opciones existentes del select
+   cargarDatos(actividad) {
+    // Limpiar las opciones existentes del select
+    this.selectCiclo.innerHTML = '';
      this.selectModulo.innerHTML = '';
- 
-     // Recorrer los cursos y agregar opciones al select
-     for(let i = 0; i < modulos.length; i++){
+    
+    this.actividad = actividad
+    
+    this.controlador.getModulos()
+    .then(modulos => {
+      this.inputTitulo.value = actividad.titulo.trim();
+      this.inputDescripcion.value = (actividad.descripcion ?? "").trim();
+      //separar los modulos de la actividad en un array
+      const modulosActividad = actividad.modulos ? actividad.modulos.split(", ").map(m => m.trim()) : [];
 
-       const div = document.createElement('div')
-        this.selectModulo.appendChild(div)
-        const input = document.createElement('input')
-          div.appendChild(input)
-          input.setAttribute('type', 'checkbox')
-          input.setAttribute('data-idModulo',  modulos[i].id)
-          const label = document.createElement('label')
-          div.appendChild(label)
-          label.textContent =  modulos[i].codigo + '. ' +  modulos[i].titulo
-          //Marcar los que coincidan
-          if(modulosActividad.includes(modulos[i].codigo)) {
-            input.checked = true;  
-        }
-     }
+      
+  
+      // Recorrer los ciclos y agregar opciones al select
+      for(let i = 0; i < modulos.length; i++){
+
+        const div = document.createElement('div')
+          this.selectModulo.appendChild(div)
+          const input = document.createElement('input')
+            div.appendChild(input)
+            div.style.display = 'none'
+            input.setAttribute('type', 'checkbox')
+            input.setAttribute('data-idModulo',  modulos[i].id)
+            const label = document.createElement('label')
+            div.appendChild(label)
+            label.textContent =  modulos[i].codigo + '. ' +  modulos[i].titulo
+            //Marcar los que coincidan
+            if(modulosActividad.includes(modulos[i].codigo)) {
+              input.checked = true;  
+          }
+          
+      }
+    })
+    
+
+     this.controlador.recibirDatosCiclo()
+     .then(ciclos => {
+    
+      let option1 = document.createElement('option')
+          this.selectCiclo.appendChild(option1)
+          option1.value = ''
+          option1.textContent = 'Seleccione'
+          option1.disabled = 'true'
+
+          
+          for (let i = 0; i < ciclos.length; i++) {
+            this.ciclos[i] = ciclos[i]
+            let option = document.createElement('option')
+            this.selectCiclo.appendChild(option)
+            option.value = ciclos[i].id
+            option.textContent = ciclos[i].siglas
+          }
+     })
+
+
    }
  }

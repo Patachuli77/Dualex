@@ -12,11 +12,16 @@
 	<link rel=stylesheet href=css/reset.css />
 	<link rel=stylesheet href=css/estilos.css />
 	<link rel=manifest href=manifest.json />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
 </head>
 
 <body>
 
 	<div id=divLogin>
+		<div class="colocacion">
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 		<h1>Dualex</h1>
 		<p>Aplicación para la evaluación de la formación DUAL.</p>
@@ -53,6 +58,7 @@
 				</optgroup>
 			</select>
 		</p>
+		</div>
 	</div>
 
 	<div id=divDialogo>
@@ -60,6 +66,10 @@
   			<span>&times;</span>
   			<h2>Título del Diálogo</h2>
   			<p>Mensaje del Diálogo</p>
+			<div id="altaMultiple" class="divFlex" style="display: none">
+				<label>Documento:</label>
+				<input id="multiple" type="file"  accept=".xlsx" size="10485760"/>
+			</div>
   			<button>Cancelar</button>
   			<button>Aceptar</button>
 		</div>
@@ -199,7 +209,35 @@
 			</div>
 		</div>
 		<div>
-			<p><strong>3.- OBSERVACIONES, ASUNTOS TRATADOS Y DECISIONES TOMADAS:</strong></p>
+			<p><strong>3.- ITINERARIO PARA LA EMPLEABILIDAD:</strong></p>
+			<div class=grid5> 
+				<div>Aplica técnicas de comunicación oral y escrita de forma afectiva y efectiva</div>
+				<div><input name=comunicacion type=radio />Siempre</div>
+				<div><input name=comunicacion type=radio />Algunas veces</div>
+				<div><input name=comunicacion type=radio />Pocas veces</div>
+				<div><input name=comunicacion type=radio />Nunca</div>
+
+				<div>Aplica estrategias apropiadas para la gestión del tiempo para alcanzar objetivos</div>
+				<div><input name=estrategias type=radio />Siempre</div>
+				<div><input name=estrategias type=radio />Algunas veces</div>
+				<div><input name=estrategias type=radio />Pocas veces</div>
+				<div><input name=estrategias type=radio />Nunca</div>
+
+				<div>Muestra una actitud flexible en las relaciones con otras personas</div>
+				<div><input name=actitud type=radio />Siempre</div>
+				<div><input name=actitud type=radio />Algunas veces</div>
+				<div><input name=actitud type=radio />Pocas veces</div>
+				<div><input name=actitud type=radio />Nunca</div>
+
+				<div>Reacciona de forma flexible y positiva ante conflictos y situaciones nuevas</div>
+				<div><input name=reaccionConflictos type=radio />Siempre</div>
+				<div><input name=reaccionConflictos type=radio />Algunas veces</div>
+				<div><input name=reaccionConflictos type=radio />Pocas veces</div>
+				<div><input name=reaccionConflictos type=radio />Nunca</div>
+			</div>
+		</div>
+		<div>
+			<p><strong>4.- OBSERVACIONES, ASUNTOS TRATADOS Y DECISIONES TOMADAS:</strong></p>
 			<textarea rows=1 cols=50 placeholder='Sin observaciones' ></textarea>
 			<p>En <input type=text placeholder=localidad />, a <input type=text placeholder=día size=15 /> de <input type=text placeholder=mes size=10 /> de <input type=text placeholder=año size=4 />.</p>
 			<p><strong>El tutor del centro de trabajo:</strong></p>
@@ -245,6 +283,11 @@
 			<p>Gestión de los Modulos</p>
 			<button id="botonModulos">Entrar</button>
 		  </div>
+		  <div class="divMenuCoordinadorBox">
+			<h2>Ciclos</h2>
+			<p>Gestión de los Ciclos</p>
+			<button id="botonModulos">Entrar</button>
+		  </div>
 	  	</div>
 	</div>
 	
@@ -286,9 +329,23 @@
 	</div>
 
 	<div id="divConvenios">
-		<table>
-
-		</table>
+		<section id="sectionConvenios">
+			<table id="tablaConvenios">
+				<thead>
+				  <tr>
+					<th>Titulo</th>
+					<th>Fecha Firma</th>
+					<th>Empresa</th>
+					<th>Ciclo</th>
+					<th>Ver convenio</th>
+					<th>Modificar</th>
+					<th>Borrar</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
+		</section>
 	</div>
 
 	<div id="divEmpresa">
@@ -304,6 +361,12 @@
 			<label for="notas">Notas:</label>
 			<textarea id="notas"></textarea>
 		</div>
+
+		
+
+
+
+
 		<div class="divFlexBotones">
 			<button id="btnAnadirEmpresa">Añadir</button>
 			<button id="volver-aniadir">Cancelar</button>
@@ -330,7 +393,19 @@
 	</div>
 
 	<div id="divEmpresas">
-		<div></div>
+		<section id="sectionEmpresa">
+			<table id="tablaEmpresa">
+				<thead>
+				  <tr>
+					<th>Siglas</th>
+					<th>Nombre Empresa</th>
+					<th>Acciones</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
+		</section>
 	</div>
 
 	<div id="divAltaAlumno" class="gestionAlumno">
@@ -356,8 +431,86 @@
 			</select>
 		</div>
 		<small id="errorCursoAlumno" class="error">Debe seleccionar un curso</small>
+
+		<div class="divFlex">
+			<label for="niaAlumno">NIA:</label>
+			<input type="text" id="niaAlumno" placeholder="(NIA)" />
+		</div>
+		<small id="errorNiaAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="dniAlumno">DNI/Pasaporte:</label>
+			<input type="text" id="dniAlumno" placeholder="(DNI/Pasaporte)" />
+		</div>
+		<small id="errorDNIAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="situacionMatriculaAlumno">Situacion Matricula:</label>
+			<input type="text"  id="situacionMatriculaAlumno" placeholder="(Situacion de Matricula)" />
+		</div>
+		<small id="errorSituacionMatriculaAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="telefonoAlumno">Telefono de contacto:</label>
+			<input type="text" id="telefonoAlumno" placeholder="(Telefono de contacto)" />
+		</div>
+		<small id="errorTelefonoAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+  				<label>Repetidor:</label>
+  			<div>
+			<label>
+				<input type="radio" name="repetidorAlumno" value="1" id="repetidorAlumno" />Repetidor</label>
+			<label>
+			<input type="radio" name="repetidorAlumno" value="0r" id="repetidorAlumnoNo" />No Repetidor</label>
+			</div>
+		</div>
+
+		<div class="divFlex">
+			<label for="avisoAlumno">Aviso alumno:</label>
+			<input type="text" id="avisoAlumno" placeholder="(Aviso alumno)" />
+		</div>
+		<small id="errorAvisoAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="materiasAlumno">Materias Matricula:</label>
+			<textarea  id="materiasAlumno"> </textarea>
+		</div>
+		<small id="errorMateriasAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="materiasPendientesAlumno">Materias Pendientes Matricula:</label>
+			<textarea  id="materiasPendientesAlumno"> </textarea>
+		</div>
+		<small id="errormMateriasAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="expedienteAlumno">Expediente del centro:</label>
+			<input type="text" id="expedienteAlumno" placeholder="(Numero de expediente del centro)" />
+		</div>
+		<small id="errorExpedienteAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="regimenAlumno">Tipo de regimen:</label>
+			<input type="text" id="regimenAlumno" placeholder="(Tipo de regimen del Alumno)" />
+		</div>
+		<small id="errorRegimenAlumno" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+  				<label>Bilingüe:</label>
+  			<div>
+			<label>
+				<input type="radio" name="bilingueAlumno" value="1" id="bilingueAlumno" />Bilingüe</label>
+			<label>
+			<input type="radio" name="bilingueAlumno" value="0r" id="bilingueAlumnoNo" />No Bilingüe</label>
+			</div>
+		</div>
+
+
+
 		<div class="divFlexBotones">
 			<button id="btnAnadirAltaAlumno">Añadir</button>
+			<button id="btnAnadirAltaAlumnoMultiple" style="background-color: rgb(5, 114, 158)">Añadir Multiple</button>
 			<button id="btnLimpiarAltaAlumno" style="background-color: darkred">Limpiar</button>
 			<button id="btnCancelarAltaAlumno" style="background-color: red">Cancelar</button>
 		</div>
@@ -386,14 +539,96 @@
 			</select>
 		</div>
 		<small id="errorCursoAlumnoMod" class="error">Debe seleccionar un curso</small>
+		
+	
+
+	<div class="divFlex">
+			<label for="niaAlumnoMod">NIA:</label>
+			<input type="text" id="niaAlumnoMod" placeholder="(NIA)" />
+		</div>
+		<small id="errorNiaAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="dniAlumnoMod">DNI/Pasaporte:</label>
+			<input type="text" id="dniAlumnoMod" placeholder="(DNI/Pasaporte)" />
+		</div>
+		<small id="errorDNIAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="situacionMatriculaAlumnoMod">Situacion Matricula:</label>
+			<input type="text"  id="situacionMatriculaAlumnoMod" placeholder="(Situacion de Matricula)" />
+		</div>
+		<small id="errorSituacionMatriculaAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="telefonoAlumnoMod">Telefono de contacto:</label>
+			<input type="text" id="telefonoAlumnoMod" placeholder="(Telefono de contacto)" />
+		</div>
+		<small id="errorTelefonoAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+  				<label>Repetidor:</label>
+  			<div>
+			<label>
+				<input type="radio" name="repetidorAlumnoMod" value="1" id="repetidorAlumnoMod" />Repetidor</label>
+			<label>
+			<input type="radio" name="repetidorAlumnoMod" value="0r" id="repetidorAlumnoNoMod" />No Repetidor</label>
+			</div>
+		</div>
+
+		<div class="divFlex">
+			<label for="avisoAlumnoMod">Aviso alumno:</label>
+			<input type="text" id="avisoAlumnoMod" placeholder="(Aviso alumno)" />
+		</div>
+		<small id="errorAvisoAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="materiasAlumnoMod">Materias Matricula:</label>
+			<textarea  id="materiasAlumnoMod"> </textarea>
+		</div>
+		<small id="errorMateriasAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="materiasPendientesAlumnoMod">Materias Pendientes Matricula:</label>
+			<textarea  id="materiasPendientesAlumnoMod"> </textarea>
+		</div>
+		<small id="errormMateriasAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="expedienteAlumnoMod">Expediente del centro:</label>
+			<input type="text" id="expedienteAlumnoMod" placeholder="(Numero de expediente del centro)" />
+		</div>
+		<small id="errorExpedienteAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+			<label for="regimenAlumnoMod">Tipo de regimen:</label>
+			<input type="text" id="regimenAlumnoMod" placeholder="(Tipo de regimen del Alumno)" />
+		</div>
+		<small id="errorRegimenAlumnoMod" class="error">Formato erróneo</small>
+
+		<div class="divFlex">
+  				<label>Bilingüe:</label>
+  			<div>
+			<label>
+				<input type="radio" name="bilingueAlumnoMod" value="1" id="bilingueAlumnoMod" />Bilingüe</label>
+			<label>
+			<input type="radio" name="bilingueAlumnoMod" value="0r" id="bilingueAlumnoNoMod" />No Bilingüe</label>
+			</div>
+		</div>
+
 		<div class="divFlexBotones">
 			<button id="btnAnadirModAlumno">Modificar</button>
 			<button id="btnCancelarModAlumno" style="background-color: red">Cancelar</button>
 		</div>
+
+
+
+
 	</div>
 
+
 	<div id="divModificarActividad" class="gestionActividad">
-		<h1>Añadir - Actividad</h1>
+		<h1>Modificar - Actividad</h1>
 		<div class="divFlex">
 			<label for="tituloActividadMod">Actividad:</label>
 			<input type="text" id="tituloActividadMod" placeholder="(Titulo Actividad)" />
@@ -402,6 +637,11 @@
 		<div class="divFlex">
 			<label for="descripcionActividadMod">Descripción:</label>
 			<textarea id="descripcionActividadMod"></textarea>
+		</div>
+		<div class="divFlex">
+			<label for="selectCicloActividadMod">Curso:</label>
+			<select id="selectCicloActividadMod">
+			</select>
 		</div>
 		<div class="divFlex">
 			<label for="selectModuloActividadMod">Modulo:</label>
@@ -429,6 +669,11 @@
 			<textarea id="descripcionActividad"></textarea>
 		</div>
 		<div class="divFlex">
+			<label for="selectCicloActividad">Ciclo:</label>
+			<select id="selectCicloActividad">
+			</select>
+		</div>
+		<div class="divFlex">
 			<label for="selectModuloActividad">Modulo:</label>
 			<div id="selectModuloActividad">
 			</div>
@@ -436,6 +681,7 @@
 		<small id="errorModuloActividad" class="error">Debe seleccionar un modulo</small>
 		<div class="divFlexBotones">
 			<button id="btnAnadirAltaActividad">Añadir</button>
+			<button id="btnAnadirAltaActividadMultiple" style="background-color: rgb(5, 114, 158)">Añadir Multiple</button>
 			<button id="btnLimpiarAltaActividad" style="background-color: darkred">Limpiar</button>
 			<button id="btnCancelarAltaActividad" style="background-color: red">Cancelar</button>
 		</div>
@@ -444,36 +690,169 @@
 
 
 	<div id='divGestionAlumnos'>
-		<p>
-			<label for="selectCursoListadoAlumnos">Curso: </label>
-			<select id="selectCursoListadoAlumnos">
-
-			</select>
-		</p>
 		<section id="gestionAlumnosListado">
-
+			<table id="tablaAlumnos">
+				<thead>
+				  <tr>
+					<th>Apellidos</th>
+					<th>Nombre</th>
+					<th>Cursos</th>
+					<th>Correo</th>
+					<th>Acciones</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
 		</section>
+
 	</div>
+
+
 	<div id='divGestionModulos'>
-		<p>
-			<label for="selectCursoListadoModulos">Curso: </label>
-			<select id="selectCursoListadoModulos">
-
-			</select>
-		</p>
 		<section id="gestionModulosListado">
+			<table id="tablaModulos">
+				<thead>
+				  <tr>
+					<th>Nombre</th>
+					<th>Codigo</th>
+					<th>Ciclo</th>
+					<!--<th>Profesores</th>-->
+					<th>Acciones</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
+		</section>
 
+
+		
+	</div>
+
+	<div id="divModificarModulo" class="gestionModulo">
+		<h1>Modificar - Modulo</h1>
+		<div class="divFlex">
+			<label for="tituloModuloMod">Modulo:</label>
+			<input type="text" id="tituloModuloMod" placeholder="(Nombre del modulo)" />
+		</div>
+		<small id="errorTituloModuloMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="codigoModuloMod">Codigo Modulo:</label>
+			<input type="text" id="codigoModuloMod" placeholder="(Codigo Modulo)" />
+		</div>
+		<small id="errorCodigoModuloMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="colorFondoMod">Color Fondo:</label>
+			<input type="text" id="colorFondoMod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondoMod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+		<div class="divFlex">
+			<label for="colorTextoMod">Color texto:</label>
+			<input type="text" id="colorTextoMod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorTextoMod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+		<div class="divFlex" id="ejemploColorModuloMod">
+		</div>
+		<div class="divFlex">
+			<label for="selectCicloModuloMod">Ciclo:</label>
+			<select id="selectCicloModuloMod">
+			</select>
+		</div>
+		<div class="divFlex">
+			<label for="selectProfesorModuloMod">Profesores:</label>
+			<div id="selectProfesorModuloMod">
+			</div>
+		</div>	
+		<small id="errorProfesorModuloMod" class="error">Selecciona un profesor</small>
+
+		<div class="divFlexBotones">
+			<button id="btnAnadirModModulo">Modificar</button>
+			<button id="btnCancelarModModulo" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id="divAltaModulo" class="gestionModulo">
+		<h1>Añadir - Modulo</h1>
+		<div class="divFlex">
+			<label for="tituloModulo">Modulo:</label>
+			<input type="text" id="tituloModulo" placeholder="(Nombre del modulo)" />
+		</div>
+		<small id="errorTituloModulo" class="error">Formato erróneo, solo caracteres</small>
+
+		<div class="divFlex">
+			<label for="codigoModulo">Codigo Modulo:</label>
+			<input type="text" id="codigoModulo" placeholder="(Codigo Modulo)" />
+		</div>
+		<small id="errorCodigoModulo" class="error">Formato erróneo, solo caracteres</small>
+
+		<div class="divFlex">
+			<label for="colorFondo">Color Fondo:</label>
+			<input type="text" id="colorFondo" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondo" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex">
+			<label for="colorTexto">Color texto:</label>
+			<input type="text" id="colorTexto" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorTexto" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex" id="ejemploColorModulo">
+		</div>
+
+		<div class="divFlex">
+			<label for="selectCicloModulo">Ciclo:</label>
+			<select id="selectCicloModulo">
+			</select>
+		</div>
+
+		<div class="divFlex">
+			<label for="selectProfesorModulo">Profesores:</label>
+			<div id="selectProfesorModulo">
+			</div>
+		</div>	
+		<small id="errorProfesorModulo" class="error">Selecciona un profesor</small>
+
+		<div class="divFlexBotones">
+			<button id="btnAnadirAltaModulo">Añadir</button>
+			<button id="btnLimpiarAltaModulo" style="background-color: darkred">Limpiar</button>
+			<button id="btnCancelarAltaModulo" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id='divGestionActividades'>
+		
+		<section id="gestionActividadesListado">
+			<table id="tablaActividades">
+				<thead>
+				  <tr>
+					<th>Título</th>
+					<th>Ciclo</th>
+					<th>Modulos</th>
+					<th>Acciones</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
 		</section>
 	</div>
-	<div id='divGestionActividades'>
-		<p>
-			<label for="selectModuloListadoActividades">Modulo: </label>
-			<select id="selectModuloListadoActividades">
-
-			</select>
-		</p>
-		<section id="gestionActividadesListado">
-
+	<div id='divGestionCiclos'>
+		
+		<section id="gestionCiclossListado">
+			<table id="tablaCiclos">
+				<thead>
+				  <tr>
+					<th>Nombre</th>
+					<th>Siglas</th>
+					<th>Grado</th>
+					<th>Acciones</th>
+				  </tr>
+				</thead>
+				<tbody>
+				</tbody>
+			  </table>
 		</section>
 	</div>
 
@@ -501,6 +880,184 @@
 		</div>
 	</div>
 
+	<div id="divAltaCiclo" class="gestionCiclo">
+		<h1>Añadir - Ciclo</h1>
+		<div class="divFlex">
+			<label for="nombreCiclo">Nombre:</label>
+			<input type="text" id="nombreCiclo" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreCiclo" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="siglasCiclo">Siglas:</label>
+			<input type="text" id="siglasCiclo" placeholder="(Siglas)" />
+		</div>
+		<small id="errorSiglasCiclo" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+  				<label>Grado:</label>
+  		<div>
+			<label>
+				<input type="radio" name="gradoCiclo" value="Grado Medio" id="gradoMedio" />Medio</label>
+			<label>
+			<input type="radio" name="gradoCiclo" value="Grado Superior" id="gradoSuperior" />Superior</label>
+			</div>
+		</div>
+		<small id="errorGradoCiclo" class="error">Selecciona un grado</small>
+		<!--  Primero -->
+		<div class="divFlex">
+			<label for="codigoCurso1">Codigo Curso Primero:</label>
+			<input type="text" id="codigoCurso1" placeholder="(Codigo)" />
+		</div>
+		<small id="errorCodigoCurso1" class="error">Formato erróneo, Un numero seguido de caracteres</small>
+
+		<div class="divFlex">
+			<label for="colorFondoCurso1">Color Fondo Primero:</label>
+			<input type="text" id="colorFondoCurso1" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondoCurso1" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+		
+		<div class="divFlex">
+			<label for="colorTextoCurso1">Color texto Primero:</label>
+			<input type="text" id="colorTextoCurso1" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColortextoCurso1" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex" id="ejemploColorPrimerCurso">
+		</div>
+
+		<div class="divFlex">
+			<label for="selectProfesorPrimerCurso">Tutor Primero:</label>
+			<div id="selectProfesorPrimerCurso">
+			</div>
+		</div>
+		<small id="errorProfesorCurso1" class="error">Selecciona un profesor</small>
+
+		<!--  Segundo -->
+		<div class="divFlex">
+			<label for="codigoCurso2">Codigo Curso Segundo:</label>
+			<input type="text" id="codigoCurso2" placeholder="(Codigo)" />
+		</div>
+		<small id="errorCodigoCurso2" class="error">Formato erróneo, Un numero seguido de caracteres</small>
+
+		<div class="divFlex">
+			<label for="colorFondoCurso2">Color Fondo:</label>
+			<input type="text" id="colorFondoCurso2" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondoCurso2" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex">
+			<label for="colorTextoCurso2">Color texto:</label>
+			<input type="text" id="colorTextoCurso2" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorTextoCurso2" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex" id="ejemploColorSegundoCurso">
+		</div>
+
+		<div class="divFlex">
+			<label for="selectProfesorSegundoCurso">Tutor Segundo:</label>
+			<div id="selectProfesorSegundoCurso">
+			</div>
+		</div>
+		<small id="errorProfesorCurso2" class="error">Selecciona un profesor</small>
+
+		
+		<div class="divFlexBotones">
+			<button id="btnAnadirAltaCiclo">Añadir</button>
+			<button id="btnLimpiarAltaCiclo" style="background-color: darkred">Limpiar</button>
+			<button id="btnCancelarAltaCiclo" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+	<div id="divModificarCiclo" class="gestionCiclo">
+		<h1>Modificar - Ciclo</h1>
+		<div class="divFlex">
+			<label for="nombreCicloMod">Nombre:</label>
+			<input type="text" id="nombreCicloMod" placeholder="(Nombre)" />
+		</div>
+		<small id="errorNombreCicloMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+			<label for="siglasCicloMod">Siglas:</label>
+			<input type="text" id="siglasCicloMod" placeholder="(Siglas)" />
+		</div>
+		<small id="errorSiglasCicloMod" class="error">Formato erróneo, solo caracteres</small>
+		<div class="divFlex">
+  				<label>Grado:</label>
+  		<div>
+			<label>
+				<input type="radio" name="gradoCicloMod" value="Grado Medio" id="gradoMedioMod" />Medio</label>
+			<label>
+			<input type="radio" name="gradoCicloMod" value="Grado Superior" id="gradoSuperiorMod" />Superior</label>
+			</div>
+		</div>
+		<small id="errorGradoCicloMod" class="error">Selecciona un grado</small>
+
+
+		<!--  Primero -->
+		<div class="divFlex">
+			<label for="codigoCurso1Mod">Codigo Curso Primero:</label>
+			<input type="text" id="codigoCurso1Mod" placeholder="(Codigo)" />
+		</div>
+		<small id="errorCodigoCurso1Mod" class="error">Formato erróneo, Un numero seguido de caracteres</small>
+		
+		<div class="divFlex">
+			<label for="colorFondoCurso1Mod">Color Fondo Primero:</label>
+			<input type="text" id="colorFondoCurso1Mod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondoCurso1Mod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+		
+		<div class="divFlex">
+			<label for="colorTextoCurso1Mod">Color texto Primero:</label>
+			<input type="text" id="colorTextoCurso1Mod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColortextoCurso1Mod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex" id="ejemploColorPrimerCursoMod">
+		</div>
+
+		<div class="divFlex">
+			<label for="selectProfesorPrimerCursoMod">Tutor Primero:</label>
+			<div id="selectProfesorPrimerCursoMod">
+			</div>
+		</div>
+		<small id="errorProfesorCurso1Mod" class="error">Selecciona un profesor</small>
+
+		<!--  Segundo -->
+		<div class="divFlex">
+			<label for="codigoCurso2Mod">Codigo Curso Segundo:</label>
+			<input type="text" id="codigoCurso2Mod" placeholder="(Codigo)" />
+		</div>
+		<small id="errorCodigoCurso2Mod" class="error">Formato erróneo, Un numero seguido de caracteres</small>
+
+		<div class="divFlex">
+			<label for="colorFondoCurso2Mod">Color Fondo:</label>
+			<input type="text" id="colorFondoCurso2Mod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorFondoCurso2Mod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+		<div class="divFlex">
+			<label for="colorTextoCurso2Mod">Color texto:</label>
+			<input type="text" id="colorTextoCurso2Mod" placeholder="(Introduzca Codigo Hex sin #)" />
+		</div>
+		<small id="errorColorTextoCurso2Mod" class="error">Formato erróneo, solo codigo hexadecimal sin #</small>
+
+
+		<div class="divFlex" id="ejemploColorSegundoCursoMod">
+		</div>
+
+		<div class="divFlex">
+			<label for="selectProfesorSegundoCursoMod">Tutor Segundo:</label>
+			<div id="selectProfesorSegundoCursoMod">
+			</div>
+		</div>
+		<small id="errorProfesorCurso2Mod" class="error">Selecciona un profesor</small>
+		
+		<div class="divFlexBotones">
+			<button id="btnAnadirModificarCiclo">Modificar</button>
+			<button id="btnCancelarModificarCiclo" style="background-color: red">Cancelar</button>
+		</div>
+	</div>
+
+
 	<div id="divModificarProfesor" class="gestionProfesor">
 		<h1>Modificar - Profesor</h1>
 		<div class="divFlex">
@@ -527,8 +1084,20 @@
 
 	<div id='divGestionProfesores'>
 		<section id="gestionProfesoresListado">
-
+			<table id="tablaProfesores">
+					<thead>
+						<tr>
+							<th>Apellidos</th>
+							<th>Nombre</th>
+							<th>Correo</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+			</table>
 		</section>
+		
 	</div>
 
 
@@ -545,6 +1114,7 @@
 		<p><strong>Licencia</strong>: <a href="licencia.html">GPL v3</a></p>
 	</div>
 	<script type=module src=js/dualex.js></script>
+	
 </body>
 
 </html>

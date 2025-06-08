@@ -70,16 +70,25 @@ export class VistaTarea extends Vista{
     this.cargarCalificaciones()
       .then(respuesta => {
         this.sCalificacion.value = tarea.id_calificacion_empresa
+        let deshabilitacion = false
+
         if (this.controlador.getUsuario().rol === 'alumno') {
-          if (tarea.id_calificacion_empresa || tarea.calificacion) { this.deshabilitar(true) }
+          
+          if (tarea.id_calificacion_empresa || tarea.calificacion) { deshabilitacion = true }
+
           for (const modulo of tarea.modulos) {
-            if (modulo.calificacion) { this.deshabilitar(true) }
+            console.log(modulo)
+            if (modulo.calificacion || modulo.revisado === 1) { 
+              
+              deshabilitacion = true
+              break
+            }
           }
-        } else {
-          for (const modulo of tarea.modulos) {
-            if (modulo.revisado) { this.deshabilitarActividades(true) }
-          }
+        } 
+        if(deshabilitacion){
+           this.deshabilitar(true)
         }
+
       })
     // Creamos el interfaz para mostrar las revisiones de los módulos
     while (this.divEvaluaciones.firstChild) { this.divEvaluaciones.firstChild.remove() }
@@ -241,7 +250,7 @@ export class VistaTarea extends Vista{
     @return Promise
   **/
   cargarActividades (idCurso) {
-    return this.controlador.verActividades(idCurso)
+    return this.controlador.verActividadesCurso(idCurso)
       .then(actividades => {
         this.eliminarHijos(this.divActividades)
         for (const actividad of actividades) {
@@ -346,6 +355,7 @@ export class VistaTarea extends Vista{
       if (this.tarea) {
         tarea.id = this.tarea.id
 				tarea.idImagenesBorrar = this.idImagenesBorrar
+        console.log(tarea)
         this.controlador.modificarTarea(tarea, siguienteTarea)
       } else { this.controlador.crearTarea(tarea, siguienteTarea) }
     } catch (e) {
